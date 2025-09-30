@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Types - MaxiCare Admin Booking</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+  <!-- remix icon font css  -->
+  <link rel="stylesheet" href="assets/css/remixicon.css">
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
+  <!-- Data Table css -->
+  <link rel="stylesheet" href="assets/css/lib/dataTables.min.css">
+  <!-- main css -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- shift management css -->
+  <link rel="stylesheet" href="assets/css/shift-management.css">
+  <!-- notification fixes css -->
+  <link rel="stylesheet" href="assets/css/notification-fixes.css">
+</head>
+
+<body>
+  <aside class="sidebar">
+    <button type="button" class="sidebar-close-btn">
+      <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+    </button>
+    <div>
+      <a href="index.html" class="sidebar-logo">
+        <img src="assets/images/logo.png" alt="site logo" class="light-logo">
+        <img src="assets/images/logo-light.png" alt="site logo" class="dark-logo">
+        <img src="assets/images/logo-icon.png" alt="site logo" class="logo-icon">
+      </a>
+    </div>
+    <div class="sidebar-menu-area">
+      <ul class="sidebar-menu" id="sidebar-menu">
+        <li>
+          <a href="index.html">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="disabled-link" style="opacity: 0.5; cursor: not-allowed;">
+            <iconify-icon icon="solar:calendar-outline" class="menu-icon"></iconify-icon>
+            <span>Calendar (Disabled)</span>
+          </a>
+        </li>
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
+            <span>Users</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="users-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users List</a>
+            </li>
+            <li>
+              <a href="add-user.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add User</a>
+            </li>
+            <li>
+              <a href="view-profile.html"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> View Profile</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <i class="ri-user-settings-line text-xl me-14 d-flex w-auto"></i>
+            <span>Role & Access</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="role-access.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Role & Access</a>
+            </li>
+            <li>
+              <a href="assign-role.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Assign Role</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <iconify-icon icon="solar:briefcase-outline" class="menu-icon"></iconify-icon>
+            <span>Job Types</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="job-types.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Job Types List</a>
+            </li>
+            <li>
+              <a href="add-job-type.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add Job Type</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <iconify-icon icon="solar:clock-circle-outline" class="menu-icon"></iconify-icon>
+            <span>Shift Management</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="add-shift.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Add Shift</a>
+            </li>
+            <li>
+              <a href="view-shifts.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> View Shifts</a>
+            </li>
+          <li>
+            <a href="clock-change-requests.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Clock Change Requests</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" onclick="showShiftReports()"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Shift Reports</a>
+          </li>
+        </ul>
+      </li>
+
+        <li class="employee-only">
+          <a href="my-shifts.html">
+            <iconify-icon icon="solar:clock-circle-outline" class="menu-icon"></iconify-icon>
+            <span>My Shifts</span>
+          </a>
+        </li>
+
+        <li class="employee-only">
+          <a href="available-shifts.html">
+            <iconify-icon icon="solar:calendar-add-outline" class="menu-icon"></iconify-icon>
+            <span>Available Shifts</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="navbar-header">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-4">
+            <button type="button" class="sidebar-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon text-2xl non-active"></iconify-icon>
+              <iconify-icon icon="iconoir:arrow-right" class="icon text-2xl active"></iconify-icon>
+            </button>
+            <button type="button" class="sidebar-mobile-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
+            </button>
+            <form class="navbar-search">
+              <input type="text" name="search" placeholder="Search">
+              <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+            </form>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <button type="button" data-theme-toggle
+              class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>
+
+            <div class="dropdown">
+              <button
+                class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"
+                type="button" data-bs-toggle="dropdown">
+                <iconify-icon icon="iconoir:bell" class="text-primary-light text-xl"></iconify-icon>
+              </button>
+              <div class="dropdown-menu to-top dropdown-menu-lg p-0">
+                <div
+                  class="m-16 py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                  <div>
+                    <h6 class="text-lg text-primary-light fw-semibold mb-0">Notifications</h6>
+                  </div>
+                  <span
+                    class="text-primary-600 fw-semibold text-lg w-40-px h-40-px rounded-circle bg-base d-flex justify-content-center align-items-center" id="notificationCount">0</span>
+                </div>
+
+                
+                <div class="max-h-400-px overflow-y-auto scroll-sm pe-4" id="notificationsList">
+                  <!-- Notifications will be loaded here -->
+                  <div class="text-center py-3">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-secondary-light text-sm">Loading notifications...</p>
+                  </div>
+                </div>
+
+                <div class="text-center py-12 px-16">
+                  <a href="javascript:void(0)" class="text-primary-600 fw-semibold text-md">See All Notification</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="dropdown">
+              <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
+                data-bs-toggle="dropdown">
+                <img src="assets/images/user.png" alt="image" class="w-40-px h-40-px object-fit-cover rounded-circle">
+              </button>
+              <div class="dropdown-menu to-top dropdown-menu-sm">
+                <div
+                  class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                  <div>
+                    <h6 class="text-lg text-primary-light fw-semibold mb-2 user-name">Loading...</h6>
+                    <span class="text-secondary-light fw-medium text-sm user-role">Loading...</span>
+                  </div>
+                  <button type="button" class="hover-text-danger">
+                    <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
+                  </button>
+                </div>
+                <ul class="to-top-list">
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="view-profile.html">
+                      <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My Profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
+                      href="javascript:void(0)" id="logoutBtn">
+                      <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-main-body">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <h6 class="fw-semibold mb-0">Job Types Management</h6>
+        <ul class="d-flex align-items-center gap-2">
+          <li class="fw-medium">
+            <a href="index.html" class="d-flex align-items-center gap-1 hover-text-primary">
+              <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+              Dashboard
+            </a>
+          </li>
+          <li>-</li>
+          <li class="fw-medium">Job Types</li>
+        </ul>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+                <h6 class="fw-semibold mb-0">Job Types List</h6>
+                <a href="add-job-type.html" class="btn btn-primary">
+                  <iconify-icon icon="solar:add-circle-outline" class="icon me-2"></iconify-icon>
+                  Add Job Type
+                </a>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-hover" id="jobTypesTable">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Title</th>
+                      <th>Code</th>
+                      <th>Description</th>
+                      <th>Location</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <th>Color</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="jobTypesTableBody">
+                    <!-- Data will be loaded here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="d-footer">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <p class="mb-0">© 2024 MaxiCare Admin Booking. All Rights Reserved.</p>
+        </div>
+        <div class="col-auto">
+          <p class="mb-0">Made by <span class="text-primary-600">MaxiCare Team</span></p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+
+  <!-- jQuery library js -->
+  <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap js -->
+  <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
+  <!-- Data Table js -->
+  <script src="assets/js/lib/dataTables.min.js"></script>
+  <!-- Iconify Font js -->
+  <script src="assets/js/lib/iconify-icon.min.js"></script>
+  <!-- API and Auth services -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/router.js"></script>
+  <!-- main js -->
+  <script src="assets/js/app.js"></script>
+
+  <script>
+
+    // Job Types Management
+    let jobTypesData = [];
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Wait a bit for auth service to initialize
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Check authentication
+      if (!authService.requireAuth()) {
+        return;
+      }
+
+
+      // Add logout functionality
+      document.getElementById('logoutBtn').addEventListener('click', async function() {
+          await authService.logout();
+          window.location.href = 'sign-in.html';
+      });
+
+      // Load job types data first, then initialize DataTable
+      await loadJobTypes();
+
+    });
+
+    async function loadJobTypes() {
+      try {
+        console.log('Loading job types...');
+        const response = await maxicareAPI.getJobTypes();
+        console.log('Job types response:', response);
+        
+        if (response.status) {
+          jobTypesData = response.data;
+          console.log('Job types data:', jobTypesData);
+          renderJobTypesTable();
+        } else {
+          console.error('Failed to load job types:', response.message);
+          showAlert('Error loading job types: ' + response.message, 'danger');
+        }
+      } catch (error) {
+        console.error('Error loading job types:', error);
+        showAlert('Error loading job types: ' + error.message, 'danger');
+      }
+    }
+
+    function renderJobTypesTable() {
+      console.log('Rendering job types table with data:', jobTypesData);
+      const tbody = document.getElementById('jobTypesTableBody');
+      
+      if (!tbody) {
+        console.error('Table body element not found!');
+        return;
+      }
+      
+      tbody.innerHTML = '';
+
+      if (!jobTypesData || jobTypesData.length === 0) {
+        console.log('No job types data to render');
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center">No job types found</td></tr>';
+        return;
+      }
+
+      jobTypesData.forEach(jobType => {
+        console.log('Rendering job type:', jobType);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${jobType.id}</td>
+          <td>${jobType.title}</td>
+          <td><span class="badge bg-primary">${jobType.code || 'N/A'}</span></td>
+          <td>${jobType.description || '-'}</td>
+          <td>${jobType.address || '-'}</td>
+          <td>${jobType.phone || '-'}</td>
+          <td>${jobType.email || '-'}</td>
+          <td>
+            <span class="badge" style="background-color: ${jobType.colorcode || '#007bff'}">
+              ${jobType.colorcode || 'N/A'}
+            </span>
+          </td>
+          <td>
+            <div class="btn-group" role="group">
+              <a href="edit-job-type.html?id=${jobType.id}" class="btn btn-sm btn-outline-primary" title="Edit Job Type">
+                <i class="ri-edit-line"></i>
+              </a>
+              <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteJobType(${jobType.id})" title="Delete Job Type">
+                <i class="ri-delete-bin-line"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+      
+      // Initialize DataTable after rendering data
+      try {
+        if (!$.fn.DataTable.isDataTable('#jobTypesTable')) {
+          $('#jobTypesTable').DataTable({
+            responsive: true,
+            pageLength: 10,
+            order: [[0, 'desc']]
+          });
+          console.log('DataTable initialized');
+        } else {
+          // Refresh existing DataTable
+          $('#jobTypesTable').DataTable().clear().rows.add($('#jobTypesTableBody tr')).draw();
+          console.log('DataTable refreshed');
+        }
+      } catch (error) {
+        console.error('DataTable initialization error:', error);
+        console.log('Continuing without DataTable...');
+      }
+    }
+
+
+    async function deleteJobType(id) {
+      const jobType = jobTypesData.find(jt => jt.id === id);
+      if (!jobType) return;
+
+      // Create a better confirmation dialog
+      const confirmModal = createDeleteConfirmationModal(jobType);
+      document.body.insertAdjacentHTML('beforeend', confirmModal);
+      
+      const modal = new bootstrap.Modal(document.getElementById('deleteJobTypeModal'));
+      modal.show();
+
+      // Handle confirmation
+      document.getElementById('confirmDeleteBtn').addEventListener('click', async function() {
+        try {
+          // Call the API to delete the job type
+          var response =await maxicareAPI.deleteJobType(id);
+          if(!response.status){
+            showAlert('Error deleting job type: ' + response.message, 'danger');
+        return;
+      }
+
+          // Remove from local data
+          jobTypesData = jobTypesData.filter(jt => jt.id !== id);
+          
+          // Update UI
+          await loadJobTypes();
+          
+          // Close modal and show success message
+          modal.hide();
+          showAlert('Job type deleted successfully', 'success');
+      } catch (error) {
+        console.error('Error deleting job type:', error);
+          showAlert('Error deleting job type: ' + (error.message || 'Unknown error'), 'danger');
+        }
+      });
+
+      // Enable/disable delete button based on checkbox
+      document.getElementById('confirmDeleteCheckbox').addEventListener('change', function() {
+        document.getElementById('confirmDeleteBtn').disabled = !this.checked;
+      });
+
+      // Remove modal when hidden
+      document.getElementById('deleteJobTypeModal').addEventListener('hidden.bs.modal', function() {
+        this.remove();
+      });
+    }
+
+    function createDeleteConfirmationModal(jobType) {
+      return `
+        <div class="modal fade" id="deleteJobTypeModal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h5 class="modal-title text-danger">
+                  <iconify-icon icon="solar:danger-triangle-outline" class="icon text-xl me-2"></iconify-icon>
+                  Delete Job Type
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                  <iconify-icon icon="solar:danger-triangle-bold" class="icon text-xl me-2"></iconify-icon>
+                  <div>
+                    <strong>Warning!</strong> This action cannot be undone. If this job type is assigned to any shifts, deletion will be prevented.
+                  </div>
+                </div>
+                
+                <p class="mb-3">Are you sure you want to delete this job type?</p>
+                
+                <div class="card border-danger-subtle">
+                  <div class="card-body">
+                    <h6 class="card-title text-danger mb-2">${jobType.title}</h6>
+                    <div class="row text-sm">
+                      <div class="col-6">
+                        <strong>Code:</strong><br>
+                        <span class="badge bg-primary">${jobType.code || 'N/A'}</span>
+                      </div>
+                      <div class="col-6">
+                        <strong>Color:</strong><br>
+                        <span class="badge" style="background-color: ${jobType.colorcode || '#007bff'}">
+                          ${jobType.colorcode || 'N/A'}
+                        </span>
+                      </div>
+                      <div class="col-12 mt-2">
+                        <strong>Description:</strong><br>
+                        ${jobType.description || 'No description available'}
+                      </div>
+                      <div class="col-6 mt-2">
+                        <strong>Location:</strong><br>
+                        ${jobType.address || 'Not specified'}
+                      </div>
+                      <div class="col-6 mt-2">
+                        <strong>Contact:</strong><br>
+                        ${jobType.phone || 'N/A'} | ${jobType.email || 'N/A'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mt-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="confirmDeleteCheckbox">
+                    <label class="form-check-label text-sm" for="confirmDeleteCheckbox">
+                      I understand this action cannot be undone
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn" disabled>
+                  <iconify-icon icon="solar:trash-bin-minimalistic-outline" class="icon text-sm me-1"></iconify-icon>
+                  Delete Job Type
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function showAlert(message, type) {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+      alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      `;
+      document.body.appendChild(alertDiv);
+
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.parentNode.removeChild(alertDiv);
+        }
+      }, 5000);
+    }
+
+    // Apply role-based access control
+    function applyRoleBasedAccess() {
+      const currentUser = authService.getCurrentUser();
+      if (!currentUser) {
+        // Redirect to login if no user
+        window.location.href = 'sign-in.html';
+        return;
+      }
+
+      const isAdmin = currentUser.role === 'admin';
+      const isUser = currentUser.role === 'user' || currentUser.role === 'employee';
+
+      // Show/hide admin-only elements
+      const adminElements = document.querySelectorAll('.admin-only');
+      adminElements.forEach(element => {
+        element.style.display = isAdmin ? 'block' : 'none';
+      });
+
+      // Show/hide employee-only elements
+      const employeeElements = document.querySelectorAll('.employee-only');
+      employeeElements.forEach(element => {
+        element.style.display = isUser ? 'block' : 'none';
+      });
+
+      // Update user info in dropdown
+      const userNameElement = document.querySelector('.user-name');
+      const userRoleElement = document.querySelector('.user-role');
+      if (userNameElement) userNameElement.textContent = `${currentUser.firstname} ${currentUser.lastname}`;
+      if (userRoleElement) userRoleElement.textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+    }
+
+
+    // Initialize role-based access when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      applyRoleBasedAccess();
+      // Load notifications
+      loadNotifications();
+    });
+  </script>
+
+  <script>
+    // Notification functions
+    async function loadNotifications() {
+      try {
+        console.log('Loading notifications...');
+        
+        // Load unread count
+        const countResponse = await maxicareAPI.getUnreadNotificationCount();
+        if (countResponse && countResponse.status) {
+          const countEl = document.getElementById('notificationCount');
+          if (countEl) {
+            countEl.textContent = countResponse.data.count;
+          }
+        }
+
+        // Load recent notifications
+        const notificationsResponse = await maxicareAPI.getNotifications(1, 5);
+        if (notificationsResponse && notificationsResponse.status) {
+          updateNotificationsList(notificationsResponse.data.notifications);
+        } else {
+          showNoNotificationsMessage();
+        }
+      } catch (error) {
+        console.error('Error loading notifications:', error);
+        showNoNotificationsMessage();
+      }
+    }
+
+    function updateNotificationsList(notifications) {
+      const notificationsList = document.getElementById('notificationsList');
+      if (!notificationsList) return;
+
+      if (notifications.length === 0) {
+        showNoNotificationsMessage();
+        return;
+      }
+
+      notificationsList.innerHTML = notifications.map(notification => `
+        <a href="javascript:void(0)" 
+           class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between ${notification.isRead ? '' : 'bg-neutral-50'}"
+           onclick="markNotificationAsRead(${notification.id})">
+          <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
+            <span class="w-44-px h-44-px ${getNotificationIconClass(notification.type)} rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+              <iconify-icon icon="${getNotificationIcon(notification.type)}" class="icon text-xxl"></iconify-icon>
+            </span>
+            <div>
+              <h6 class="text-md fw-semibold mb-4">${notification.title}</h6>
+              <p class="mb-0 text-sm text-secondary-light text-w-200-px">${notification.message}</p>
+            </div>
+          </div>
+          <span class="text-sm text-secondary-light flex-shrink-0">${formatTimeAgo(notification.createdAt)}</span>
+        </a>
+      `).join('');
+    }
+
+    function showNoNotificationsMessage() {
+      const notificationsList = document.getElementById('notificationsList');
+      if (!notificationsList) return;
+
+      notificationsList.innerHTML = `
+        <div class="text-center py-4">
+          <iconify-icon icon="solar:bell-outline" class="icon text-4xl text-secondary-light mb-2"></iconify-icon>
+          <p class="text-secondary-light mb-0">No notifications</p>
+        </div>
+      `;
+    }
+
+    function getNotificationIcon(type) {
+      const iconMap = {
+        'shift_assigned': 'solar:clock-circle-outline',
+        'shift_completed': 'solar:check-circle-outline',
+        'shift_cancelled': 'solar:close-circle-outline',
+        'user_registered': 'solar:user-plus-outline',
+        'system_announcement': 'solar:megaphone-outline',
+        'shift_reminder': 'solar:alarm-outline',
+        'payment_processed': 'solar:wallet-outline',
+        'profile_updated': 'solar:user-outline',
+        'password_changed': 'solar:lock-outline',
+        'login_attempt': 'solar:login-3-outline'
+      };
+      return iconMap[type] || 'solar:bell-outline';
+    }
+
+    function getNotificationIconClass(type) {
+      const classMap = {
+        'shift_assigned': 'bg-primary-subtle text-primary-main',
+        'shift_completed': 'bg-success-subtle text-success-main',
+        'shift_cancelled': 'bg-danger-subtle text-danger-main',
+        'user_registered': 'bg-info-subtle text-info-main',
+        'system_announcement': 'bg-warning-subtle text-warning-main',
+        'shift_reminder': 'bg-warning-subtle text-warning-main',
+        'payment_processed': 'bg-success-subtle text-success-main',
+        'profile_updated': 'bg-info-subtle text-info-main',
+        'password_changed': 'bg-warning-subtle text-warning-main',
+        'login_attempt': 'bg-info-subtle text-info-main'
+      };
+      return classMap[type] || 'bg-secondary-subtle text-secondary-main';
+    }
+
+    async function markNotificationAsRead(notificationId) {
+      try {
+        await maxicareAPI.markNotificationAsRead(notificationId);
+        // Reload notifications to update the UI
+        await loadNotifications();
+      } catch (error) {
+        console.error('Error marking notification as read:', error);
+      }
+    }
+
+    function formatTimeAgo(dateString) {
+      if (!dateString) return 'N/A';
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+      if (diffInMinutes < 1) return 'Just now';
+      if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+      if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+      return `${Math.floor(diffInMinutes / 1440)}d ago`;
+    }
+
+    // Shift Reports functionality - redirect to view-shifts page
+    function showShiftReports() {
+      window.location.href = 'view-shifts.html';
+    }
+  </script>
+</body>
+</html>

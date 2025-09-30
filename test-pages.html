@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Pages - MaxiCare Admin Booking</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+  <!-- remix icon font css  -->
+  <link rel="stylesheet" href="assets/css/remixicon.css">
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
+  <!-- main css -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <div class="container-fluid py-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="text-center mb-5">
+          <h1 class="display-4 fw-bold text-primary">MaxiCare Admin Booking System</h1>
+          <p class="lead text-muted">Test Pages with Mock Data Integration</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <div class="w-60-px h-60-px bg-primary-100 rounded-circle d-flex justify-content-center align-items-center mx-auto mb-3">
+              <iconify-icon icon="solar:briefcase-outline" class="text-primary text-2xl"></iconify-icon>
+            </div>
+            <h5 class="card-title">Job Types Management</h5>
+            <p class="card-text">Manage job types with Google Maps integration for location selection. Create, edit, and delete job types with latitude/longitude coordinates.</p>
+            <div class="mt-3">
+              <a href="job-types.html" class="btn btn-primary">View Job Types</a>
+            </div>
+            <div class="mt-2">
+              <small class="text-muted">Features: CRUD operations, Google Maps API, Location selection</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <div class="w-60-px h-60-px bg-info-100 rounded-circle d-flex justify-content-center align-items-center mx-auto mb-3">
+              <iconify-icon icon="flowbite:users-group-outline" class="text-info text-2xl"></iconify-icon>
+            </div>
+            <h5 class="card-title">Users Management</h5>
+            <p class="card-text">Complete user management system with CRUD operations. Add, edit, view, and delete users with role assignments and team management.</p>
+            <div class="mt-3">
+              <a href="users-management.html" class="btn btn-info">View Users</a>
+            </div>
+            <div class="mt-2">
+              <small class="text-muted">Features: User CRUD, Role assignment, Team management</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <div class="w-60-px h-60-px bg-warning-100 rounded-circle d-flex justify-content-center align-items-center mx-auto mb-3">
+              <iconify-icon icon="ri-user-settings-line" class="text-warning text-2xl"></iconify-icon>
+            </div>
+            <h5 class="card-title">Role Management</h5>
+            <p class="card-text">Role and access control management. Assign roles to users, manage permissions, and control system access based on user roles.</p>
+            <div class="mt-3">
+              <a href="role-management.html" class="btn btn-warning">View Roles</a>
+            </div>
+            <div class="mt-2">
+              <small class="text-muted">Features: Role assignment, Permission management, Access control</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mt-4">
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <iconify-icon icon="solar:database-outline" class="text-success me-2"></iconify-icon>
+              Mock Data Integration
+            </h5>
+            <p class="card-text">All pages are fully integrated with mock data service that provides:</p>
+            <ul class="list-unstyled">
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>8 Sample users with different roles</li>
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>5 Job types with location data</li>
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>6 Sample shifts with clock records</li>
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>Full CRUD operations for all entities</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">
+              <iconify-icon icon="solar:map-outline" class="text-danger me-2"></iconify-icon>
+              Google Maps Integration
+            </h5>
+            <p class="card-text">Job Types page includes Google Maps API integration:</p>
+            <ul class="list-unstyled">
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>Interactive map for location selection</li>
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>Address autocomplete functionality</li>
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>Click to set coordinates</li>
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>Draggable markers</li>
+              <li><iconify-icon icon="solar:check-circle-outline" class="text-success me-2"></iconify-icon>Radius setting for job locations</li>
+            </ul>
+            <div class="alert alert-info mt-3">
+              <small><strong>Note:</strong> Replace 'YOUR_API_KEY' in job-types.html with your actual Google Maps API key.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Quick Start Guide</h5>
+            <div class="row">
+              <div class="col-md-4">
+                <h6>1. Authentication</h6>
+                <p>Use any email from mock data with password: <code>password123</code></p>
+                <p><strong>Sample users:</strong></p>
+                <ul class="small">
+                  <li>admin@maxicare.com (Admin)</li>
+                  <li>sarah.johnson@maxicare.com (Employee)</li>
+                  <li>mike.davis@maxicare.com (Employee)</li>
+                </ul>
+              </div>
+              <div class="col-md-4">
+                <h6>2. Test Features</h6>
+                <ul>
+                  <li>Create new job types with map locations</li>
+                  <li>Add/edit users with role assignments</li>
+                  <li>Assign roles and manage permissions</li>
+                  <li>View all data in responsive tables</li>
+                </ul>
+              </div>
+              <div class="col-md-4">
+                <h6>3. Navigation</h6>
+                <p>All pages include:</p>
+                <ul>
+                  <li>Responsive sidebar navigation</li>
+                  <li>Role-based menu visibility</li>
+                  <li>User authentication checks</li>
+                  <li>Logout functionality</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <a href="sign-in.html" class="btn btn-primary btn-lg me-3">
+          <iconify-icon icon="solar:login-3-outline" class="me-2"></iconify-icon>
+          Go to Sign In
+        </a>
+        <a href="index.html" class="btn btn-outline-primary btn-lg">
+          <iconify-icon icon="solar:home-smile-angle-outline" class="me-2"></iconify-icon>
+          Go to Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery library js -->
+  <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap js -->
+  <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
+  <!-- Iconify Font js -->
+  <script src="assets/js/lib/iconify-icon.min.js"></script>
+  <!-- API and Auth services -->
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <!-- main js -->
+  <script src="assets/js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Display API service information
+      console.log('MaxiCare API Service initialized');
+      console.log('- Base URL:', maxicareAPI.baseURL);
+      console.log('- Mock Data Disabled: Using real backend endpoints');
+    });
+  </script>
+</body>
+</html>

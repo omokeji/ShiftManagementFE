@@ -1,0 +1,875 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Dashboard - MaxiCare</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+  <!-- remix icon font css  -->
+  <link rel="stylesheet" href="assets/css/remixicon.css">
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
+  <!-- Apex Chart css -->
+  <link rel="stylesheet" href="assets/css/lib/apexcharts.css">
+  <!-- Data Table css -->
+  <link rel="stylesheet" href="assets/css/lib/dataTables.min.css">
+  <!-- Text Editor css -->
+  <link rel="stylesheet" href="assets/css/lib/editor-katex.min.css">
+  <link rel="stylesheet" href="assets/css/lib/editor.atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/css/lib/editor.quill.snow.css">
+  <!-- Date picker css -->
+  <link rel="stylesheet" href="assets/css/lib/flatpickr.min.css">
+  <!-- Calendar css -->
+  <link rel="stylesheet" href="assets/css/lib/full-calendar.css">
+  <!-- Vector Map css -->
+  <link rel="stylesheet" href="assets/css/lib/jquery-jvectormap-2.0.5.css">
+  <!-- Popup css -->
+  <link rel="stylesheet" href="assets/css/lib/magnific-popup.css">
+  <!-- Slick Slider css -->
+  <link rel="stylesheet" href="assets/css/lib/slick.css">
+  <!-- prism css -->
+  <link rel="stylesheet" href="assets/css/lib/prism.css">
+  <!-- file upload css -->
+  <link rel="stylesheet" href="assets/css/lib/file-upload.css">
+
+  <link rel="stylesheet" href="assets/css/lib/audioplayer.css">
+  <!-- main css -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- shift management css -->
+  <link rel="stylesheet" href="assets/css/shift-management.css">
+</head>
+
+<body>
+  <aside class="sidebar">
+    <button type="button" class="sidebar-close-btn">
+      <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+    </button>
+    <div>
+      <a href="employee-dashboard.html" class="sidebar-logo">
+        <img src="assets/images/logo.png" alt="site logo" class="light-logo">
+        <img src="assets/images/logo-light.png" alt="site logo" class="dark-logo">
+        <img src="assets/images/logo-icon.png" alt="site logo" class="logo-icon">
+      </a>
+    </div>
+    <div class="sidebar-menu-area">
+      <ul class="sidebar-menu" id="sidebar-menu">
+        <li>
+          <a href="employee-dashboard.html">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="disabled-link" style="opacity: 0.5; cursor: not-allowed;">
+            <iconify-icon icon="solar:calendar-outline" class="menu-icon"></iconify-icon>
+            <span>Calendar (Disabled)</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-shifts.html">
+            <iconify-icon icon="solar:clock-circle-outline" class="menu-icon"></iconify-icon>
+            <span>My Shifts</span>
+          </a>
+        </li>
+        <li>
+          <a href="available-shifts.html">
+            <iconify-icon icon="solar:calendar-add-outline" class="menu-icon"></iconify-icon>
+            <span>Available Shifts</span>
+          </a>
+        </li>
+        <li>
+          <a href="view-profile.html">
+            <iconify-icon icon="solar:user-outline" class="menu-icon"></iconify-icon>
+            <span>My Profile</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="navbar-header">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-4">
+            <button type="button" class="sidebar-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon text-2xl non-active"></iconify-icon>
+              <iconify-icon icon="iconoir:arrow-right" class="icon text-2xl active"></iconify-icon>
+            </button>
+            <button type="button" class="sidebar-mobile-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
+            </button>
+            <form class="navbar-search">
+              <input type="text" name="search" placeholder="Search">
+              <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+            </form>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <button type="button" data-theme-toggle
+              class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>
+
+            <div class="dropdown">
+              <button
+                class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"
+                type="button" data-bs-toggle="dropdown">
+                <iconify-icon icon="iconoir:bell" class="text-primary-light text-xl"></iconify-icon>
+              </button>
+              <div class="dropdown-menu to-top dropdown-menu-lg p-0">
+                <div
+                  class="m-16 py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                  <div>
+                    <h6 class="text-lg text-primary-light fw-semibold mb-0">Notifications</h6>
+                  </div>
+                  <span
+                    class="text-primary-600 fw-semibold text-lg w-40-px h-40-px rounded-circle bg-base d-flex justify-content-center align-items-center" id="notificationCount">0</span>
+                </div>
+
+                <div class="max-h-400-px overflow-y-auto scroll-sm pe-4" id="notificationsList">
+                  <!-- Notifications will be loaded here -->
+                </div>
+
+                <div class="text-center py-12 px-16">
+                  <a href="javascript:void(0)" class="text-primary-600 fw-semibold text-md">See All Notifications</a>
+                </div>
+
+              </div>
+            </div><!-- Notification dropdown end -->
+
+            <div class="dropdown">
+              <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
+                data-bs-toggle="dropdown">
+                <img src="assets/images/user.png" alt="image" class="w-40-px h-40-px object-fit-cover rounded-circle">
+              </button>
+              <div class="dropdown-menu to-top dropdown-menu-sm">
+                <div
+                  class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                  <div>
+                    <h6 class="text-lg text-primary-light fw-semibold mb-2 user-name">Loading...</h6>
+                    <span class="text-secondary-light fw-medium text-sm user-role">Employee</span>
+                  </div>
+                  <button type="button" class="hover-text-danger">
+                    <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
+                  </button>
+                </div>
+                <ul class="to-top-list">
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="view-profile.html">
+                      <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My Profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="my-shifts.html">
+                      <iconify-icon icon="solar:clock-circle-outline" class="icon text-xl"></iconify-icon> My Shifts</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="available-shifts.html">
+                      <iconify-icon icon="solar:calendar-add-outline" class="icon text-xl"></iconify-icon> Available Shifts</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
+                      href="javascript:void(0)" id="logoutBtn">
+                      <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </div><!-- Profile dropdown end -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-main-body">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <h6 class="fw-semibold mb-0">Employee Dashboard</h6>
+        <ul class="d-flex align-items-center gap-2">
+          <li class="fw-medium">
+            <a href="employee-dashboard.html" class="d-flex align-items-center gap-1 hover-text-primary">
+              <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+              Dashboard
+            </a>
+          </li>
+          <li>-</li>
+          <li class="fw-medium">Employee Portal</li>
+        </ul>
+      </div>
+
+      <!-- Employee Stats Cards -->
+      <div class="row row-cols-xxl-4 row-cols-xl-3 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1 gy-4">
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-primary h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-white mb-1">My Shifts</p>
+                  <h6 class="mb-0 text-white" id="myShiftsCount">-</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-white bg-opacity-20 rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:clock-circle-outline" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <p class="fw-medium text-sm text-white mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1" id="completedShiftsTrend">
+                  <iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>
+                  <span id="completedShiftsThisMonth">-</span>
+                </span>
+                Completed this month
+              </p>
+            </div>
+          </div><!-- card end -->
+        </div>
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-success h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-white mb-1">Available Shifts</p>
+                  <h6 class="mb-0 text-white" id="availableShiftsCount">-</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-white bg-opacity-20 rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:calendar-add-outline" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <p class="fw-medium text-sm text-white mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1">
+                  <iconify-icon icon="solar:calendar-outline" class="text-xs"></iconify-icon>
+                  <span id="upcomingShifts">-</span>
+                </span>
+                Upcoming this week
+              </p>
+            </div>
+          </div><!-- card end -->
+        </div>
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-info h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-white mb-1">Hours Worked</p>
+                  <h6 class="mb-0 text-white" id="hoursWorked">-</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-white bg-opacity-20 rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:clock-outline" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <p class="fw-medium text-sm text-white mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1">
+                  <iconify-icon icon="solar:chart-outline" class="text-xs"></iconify-icon>
+                  <span id="avgHoursPerWeek">-</span>
+                </span>
+                Avg per week
+              </p>
+            </div>
+          </div><!-- card end -->
+        </div>
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-warning h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-white mb-1">Earnings</p>
+                  <h6 class="mb-0 text-white" id="totalEarnings">$0</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-white bg-opacity-20 rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:wallet-bold" class="text-white text-2xl mb-0"></iconify-icon>
+                </div>
+              </div>
+              <!-- <p class="fw-medium text-sm text-white mt-12 mb-0 d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center gap-1">
+                  <iconify-icon icon="solar:chart-outline" class="text-xs"></iconify-icon>
+                  <span id="earningsThisMonth">$0</span>
+                </span>
+                This month
+              </p> -->
+            </div>
+          </div><!-- card end -->
+        </div>
+      </div>
+
+      <!-- Employee Content Section -->
+      <div class="row gy-4 mt-4">
+        <div class="col-xxl-8">
+          <div class="card h-100">
+            <div class="card-body p-24">
+              <h6 class="mb-12 fw-semibold text-lg mb-16">Today's Schedule</h6>
+              <div id="todayScheduleList" class="list-group list-group-flush">
+                <!-- Today's shifts will be loaded here -->
+                <div class="text-center py-3">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="mt-2 text-secondary-light text-sm">Loading today's schedule...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xxl-4">
+          <div class="card h-100">
+            <div class="card-body p-24">
+              <h6 class="mb-12 fw-semibold text-lg mb-16">Quick Actions</h6>
+              <div class="d-grid gap-3">
+                <a href="my-shifts.html" class="btn btn-outline-primary d-flex align-items-center gap-2">
+                  <iconify-icon icon="solar:clock-circle-outline" class="icon"></iconify-icon>
+                  View My Shifts
+                </a>
+                <a href="available-shifts.html" class="btn btn-outline-success d-flex align-items-center gap-2">
+                  <iconify-icon icon="solar:calendar-add-outline" class="icon"></iconify-icon>
+                  Browse Available Shifts
+                </a>
+                <button class="btn btn-outline-secondary d-flex align-items-center gap-2" disabled style="opacity: 0.5;">
+                  <iconify-icon icon="solar:calendar-outline" class="icon"></iconify-icon>
+                  Calendar (Disabled)
+                </button>
+                <a href="view-profile.html" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                  <iconify-icon icon="solar:user-outline" class="icon"></iconify-icon>
+                  Update Profile
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity Section -->
+      <div class="row gy-4 mt-4">
+        <div class="col-xxl-12">
+          <div class="card h-100">
+            <div class="card-body p-24">
+              <h6 class="mb-12 fw-semibold text-lg mb-16">Recent Activity</h6>
+              <div id="recentActivityList" class="list-group list-group-flush">
+                <!-- Recent activities will be loaded here -->
+                <div class="text-center py-3">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="mt-2 text-secondary-light text-sm">Loading recent activity...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="d-footer">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <p class="mb-0">© 2024 MaxiCare Employee Portal. All Rights Reserved.</p>
+        </div>
+        <div class="col-auto">
+          <p class="mb-0">Made by <span class="text-primary-600">MaxiCare Team</span></p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- jQuery library js -->
+  <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap js -->
+  <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
+  <!-- Apex Chart js -->
+  <script src="assets/js/lib/apexcharts.min.js"></script>
+  <!-- Data Table js -->
+  <script src="assets/js/lib/dataTables.min.js"></script>
+  <!-- Iconify Font js -->
+  <script src="assets/js/lib/iconify-icon.min.js"></script>
+  <!-- jQuery UI js -->
+  <script src="assets/js/lib/jquery-ui.min.js"></script>
+  <!-- Vector Map js -->
+  <script src="assets/js/lib/jquery-jvectormap-2.0.5.js"></script>
+  <script src="assets/js/lib/jquery-jvectormap-world-mill-en.js"></script>
+  <!-- Popup js -->
+  <script src="assets/js/lib/magnifc-popup.min.js"></script>
+  <!-- Slick Slider js -->
+  <script src="assets/js/lib/slick.min.js"></script>
+  <!-- prism js -->
+  <script src="assets/js/lib/prism.js"></script>
+  <!-- file upload js -->
+  <script src="assets/js/lib/file-upload.js"></script>
+  <!-- audioplayer -->
+  <script src="assets/js/lib/audioplayer.js"></script>
+
+  <!-- API and Auth services -->
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/router.js"></script>
+  <!-- main js -->
+  <script src="assets/js/app.js"></script>
+
+  <script>
+    // Employee Dashboard initialization
+    document.addEventListener('DOMContentLoaded', async function() {
+      console.log('Employee Dashboard loading...');
+      
+      // Check authentication
+      if (!authService.requireAuth()) {
+        return;
+      }
+
+      // Check if user is employee
+      const currentUser = authService.getCurrentUser();
+      if (!currentUser || (currentUser.role !== 'employee' && currentUser.role !== 'user')) {
+        console.log('User is not an employee, redirecting to admin dashboard');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      console.log('Employee authentication successful, loading dashboard...');
+      
+      // Load dashboard data
+      await loadEmployeeDashboardData();
+
+      // Load notifications
+      await loadNotifications();
+
+      // Setup user info
+      setupUserInfo();
+
+      // Add logout functionality (without confirmation)
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function() {
+          await authService.logout();
+          window.location.href = 'sign-in.html';
+        });
+      }
+    });
+
+    // Safe function to load available shifts with error handling
+    async function loadAvailableShiftsSafely() {
+      try {
+        const response = await maxicareAPI.getAvailableShifts();
+        return response;
+      } catch (error) {
+        console.warn('Failed to load available shifts:', error);
+        // Return empty data structure to prevent dashboard from breaking
+        return { status: false, data: [], message: 'Available shifts temporarily unavailable' };
+      }
+    }
+
+    async function loadEmployeeDashboardData() {
+      try {
+        // Load employee-specific data
+        const [myShiftsResponse, availableShiftsResponse] = await Promise.all([
+          maxicareAPI.getUserShifts(),
+          loadAvailableShiftsSafely()
+        ]);
+
+        // Update dashboard cards
+        updateEmployeeDashboardCards(myShiftsResponse, availableShiftsResponse);
+        
+        // Load today's schedule
+        await loadTodaySchedule(myShiftsResponse);
+        
+        // Load recent activity
+        await loadRecentActivity(myShiftsResponse);
+
+      } catch (error) {
+        console.error('Error loading employee dashboard data:', error);
+        // Show default values on error
+        updateEmployeeDashboardCards(null, null);
+      }
+    }
+
+    function updateEmployeeDashboardCards(myShiftsResponse, availableShiftsResponse) {
+      const myShifts = myShiftsResponse?.data || [];
+      const availableShifts = availableShiftsResponse?.data || [];
+
+      // Update My Shifts count
+      const myShiftsCountEl = document.getElementById('myShiftsCount');
+      if (myShiftsCountEl) myShiftsCountEl.textContent = myShifts.length;
+
+      // Update Available Shifts count
+      const availableShiftsCountEl = document.getElementById('availableShiftsCount');
+      if (availableShiftsCountEl) availableShiftsCountEl.textContent = availableShifts.length;
+
+      // Calculate completed shifts this month
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const completedThisMonth = myShifts.filter(shift => {
+        const shiftDate = new Date(shift.date);
+        // A shift is completed if it has status 'completed' or if it's past its end date
+        const isCompleted = shift.status === 'completed' || 
+                           (shiftDate < new Date() && shift.status !== 'cancelled');
+        return isCompleted && 
+               shiftDate.getMonth() === currentMonth && 
+               shiftDate.getFullYear() === currentYear;
+      }).length;
+
+      const completedShiftsEl = document.getElementById('completedShiftsThisMonth');
+      if (completedShiftsEl) completedShiftsEl.textContent = completedThisMonth;
+
+      // Calculate upcoming shifts this week
+      const today = new Date();
+      const weekFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+      const upcomingShifts = myShifts.filter(shift => {
+        const shiftDate = new Date(shift.date);
+        return shiftDate >= today && shiftDate <= weekFromNow;
+      }).length;
+
+      const upcomingShiftsEl = document.getElementById('upcomingShifts');
+      if (upcomingShiftsEl) upcomingShiftsEl.textContent = upcomingShifts;
+
+      // Calculate hours worked and earnings using actual clock-in records
+      let totalHours = 0;
+      let totalEarnings = 0;
+      const currentUserId = authService.getCurrentUser()?.id;
+
+      console.log('Calculating hours and earnings for user:', currentUserId);
+      console.log('My shifts data:', myShifts);
+      console.log('Number of shifts:', myShifts.length);
+
+      myShifts.forEach(shift => {
+        console.log(`Processing shift ${shift.id}:`, shift.clockInRecords);
+        if (shift.clockInRecords && shift.clockInRecords.length > 0) {
+          shift.clockInRecords.forEach(record => {
+            console.log(`Processing clock-in record:`, record);
+            // Only count records for the current user
+            if (record.userId === currentUserId && record.status === 'clocked_out') {
+              console.log(`Found clocked out record for user ${currentUserId}:`, {
+                clockInTime: record.clockInTime,
+                clockOutTime: record.clockOutTime,
+                hourlyRate: shift.hourlyRate || 25 // Use shift hourly rate or default
+              });
+              
+              // Calculate hours worked from clock-in and clock-out times
+              if (record.clockInTime && record.clockOutTime) {
+                const clockInTime = new Date(record.clockInTime);
+                const clockOutTime = new Date(record.clockOutTime);
+                const hoursWorked = (clockOutTime.getTime() - clockInTime.getTime()) / (1000 * 60 * 60); // Convert to hours
+                totalHours += hoursWorked;
+                console.log(`Added ${hoursWorked.toFixed(2)} hours from record`);
+                
+                // Calculate earnings using shift hourly rate
+                const hourlyRate = shift.hourlyRate || 25; // Use shift hourly rate or default
+                const earnings = hoursWorked * hourlyRate;
+                totalEarnings += earnings;
+                console.log(`Added $${earnings.toFixed(2)} earnings from record (${hoursWorked.toFixed(2)} hours × $${hourlyRate})`);
+              } else {
+                console.log('Missing clock-in or clock-out time in record');
+              }
+            } else {
+              console.log(`Skipping record - userId: ${record.userId}, status: ${record.status}, currentUserId: ${currentUserId}`);
+            }
+          });
+        }
+      });
+
+      console.log(`Total hours: ${totalHours.toFixed(2)}, Total earnings: $${totalEarnings.toFixed(2)}`);
+
+      const hoursWorkedEl = document.getElementById('hoursWorked');
+      if (hoursWorkedEl) hoursWorkedEl.textContent = totalHours.toFixed(2);
+
+      // Calculate average hours per week (simplified)
+      const avgHoursPerWeekEl = document.getElementById('avgHoursPerWeek');
+      if (avgHoursPerWeekEl) avgHoursPerWeekEl.textContent = Math.round(totalHours / 4); // Rough estimate
+
+      // Display earnings (no rounding)
+      const totalEarningsEl = document.getElementById('totalEarnings');
+      if (totalEarningsEl) totalEarningsEl.textContent = `$${totalEarnings.toFixed(2)}`;
+
+      const earningsThisMonthEl = document.getElementById('earningsThisMonth');
+      if (earningsThisMonthEl) earningsThisMonthEl.textContent = `$${(totalEarnings * 0.25).toFixed(2)}`; // Rough estimate
+
+      console.log('Employee dashboard cards updated successfully');
+    }
+
+    async function loadTodaySchedule(myShiftsResponse) {
+      const todayScheduleList = document.getElementById('todayScheduleList');
+      if (!todayScheduleList) return;
+
+      const myShifts = myShiftsResponse?.data || [];
+      const today = new Date().toISOString().split('T')[0];
+      const todayShifts = myShifts.filter(shift => shift.date === today);
+
+      if (todayShifts.length === 0) {
+        todayScheduleList.innerHTML = `
+          <div class="text-center py-4">
+            <iconify-icon icon="solar:calendar-outline" class="icon text-4xl text-secondary-light mb-2"></iconify-icon>
+            <p class="text-secondary-light mb-0">No shifts scheduled for today</p>
+            <a href="available-shifts.html" class="btn btn-primary btn-sm mt-2">Browse Available Shifts</a>
+          </div>
+        `;
+        return;
+      }
+
+      todayScheduleList.innerHTML = todayShifts.map(shift => `
+        <div class="list-group-item d-flex align-items-center gap-3">
+          <div class="w-40-px h-40-px bg-primary-50 rounded-circle d-flex justify-content-center align-items-center">
+            <iconify-icon icon="solar:clock-circle-outline" class="text-primary-600"></iconify-icon>
+          </div>
+          <div class="flex-grow-1">
+            <h6 class="mb-1 text-sm fw-semibold">${shift.title}</h6>
+            <p class="mb-0 text-xs text-secondary-light">${shift.startTime} - ${shift.endTime}</p>
+          </div>
+          <span class="badge bg-${getStatusColor(shift.status)}">${shift.status}</span>
+        </div>
+      `).join('');
+    }
+
+    async function loadRecentActivity(myShiftsResponse) {
+      const recentActivityList = document.getElementById('recentActivityList');
+      if (!recentActivityList) return;
+
+      try {
+        const currentUser = authService.getCurrentUser();
+        if (!currentUser) return;
+
+        // Get recent activities from multiple sources
+        const [myShifts, clockInRecords, notifications] = await Promise.all([
+          Promise.resolve(myShiftsResponse?.data || []),
+          maxicareAPI.getUserClockInRecords(currentUser.id, 1, 10).catch(() => ({ status: false, data: { records: [] } })),
+          maxicareAPI.getNotifications(1, 5).catch(() => ({ status: false, data: { notifications: [] } }))
+        ]);
+
+        // Combine all activities
+        const activities = [];
+
+        // Add shift activities
+        myShifts.forEach(shift => {
+          activities.push({
+            type: 'shift',
+            title: shift.title,
+            description: `Shift on ${new Date(shift.date).toLocaleDateString()} - ${shift.status}`,
+            timestamp: shift.updatedAt || shift.createdAt,
+            icon: 'solar:clock-circle-outline',
+            color: getStatusColor(shift.status)
+          });
+        });
+
+        // Add clock-in/out activities
+        if (clockInRecords.status && clockInRecords.data.records) {
+          clockInRecords.data.records.forEach(record => {
+            if (record.clockInTime) {
+              activities.push({
+                type: 'clockin',
+                title: 'Clocked In',
+                description: `${record.shift?.title || 'Shift'} at ${new Date(record.clockInTime).toLocaleTimeString()}`,
+                timestamp: record.clockInTime,
+                icon: 'solar:login-3-outline',
+                color: 'success'
+              });
+            }
+            if (record.clockOutTime) {
+              activities.push({
+                type: 'clockout',
+                title: 'Clocked Out',
+                description: `${record.shift?.title || 'Shift'} at ${new Date(record.clockOutTime).toLocaleTimeString()}`,
+                timestamp: record.clockOutTime,
+                icon: 'solar:logout-3-outline',
+                color: 'info'
+              });
+            }
+          });
+        }
+
+        // Add notification activities
+        if (notifications.status && notifications.data.notifications) {
+          notifications.data.notifications.forEach(notification => {
+            activities.push({
+              type: 'notification',
+              title: notification.title,
+              description: notification.message,
+              timestamp: notification.createdAt,
+              icon: 'solar:bell-outline',
+              color: notification.isRead ? 'secondary' : 'warning'
+            });
+          });
+        }
+
+        // Sort by timestamp and take the 5 most recent
+        const recentActivities = activities
+          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+          .slice(0, 5);
+
+        if (recentActivities.length === 0) {
+          recentActivityList.innerHTML = `
+            <div class="text-center py-4">
+              <iconify-icon icon="solar:history-outline" class="icon text-4xl text-secondary-light mb-2"></iconify-icon>
+              <p class="text-secondary-light mb-0">No recent activity</p>
+            </div>
+          `;
+          return;
+        }
+
+        recentActivityList.innerHTML = recentActivities.map(activity => `
+          <div class="list-group-item d-flex align-items-center gap-3">
+            <div class="w-40-px h-40-px bg-${activity.color}-50 rounded-circle d-flex justify-content-center align-items-center">
+              <iconify-icon icon="${activity.icon}" class="text-${activity.color}-600"></iconify-icon>
+            </div>
+            <div class="flex-grow-1">
+              <h6 class="mb-1 text-sm fw-semibold">${activity.title}</h6>
+              <p class="mb-0 text-xs text-secondary-light">${activity.description}</p>
+            </div>
+            <span class="text-xs text-secondary-light">${formatTimeAgo(activity.timestamp)}</span>
+          </div>
+        `).join('');
+
+      } catch (error) {
+        console.error('Error loading recent activity:', error);
+        recentActivityList.innerHTML = `
+          <div class="text-center py-4">
+            <iconify-icon icon="solar:history-outline" class="icon text-4xl text-secondary-light mb-2"></iconify-icon>
+            <p class="text-secondary-light mb-0">Error loading recent activity</p>
+          </div>
+        `;
+      }
+    }
+
+    function getStatusColor(status) {
+      switch (status) {
+        case 'completed': return 'success';
+        case 'in-progress': return 'warning';
+        case 'scheduled': return 'info';
+        case 'available': return 'primary';
+        default: return 'secondary';
+      }
+    }
+
+    function formatTimeAgo(timestamp) {
+      if (!timestamp) return 'Unknown';
+      const now = new Date();
+      const time = new Date(timestamp);
+      const diffInMinutes = Math.floor((now - time) / (1000 * 60));
+      
+      if (diffInMinutes < 1) return 'Just now';
+      if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+      if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+      return `${Math.floor(diffInMinutes / 1440)}d ago`;
+    }
+
+    async function loadNotifications() {
+      try {
+        console.log('Loading employee notifications...');
+        
+        // Load unread count
+        const countResponse = await maxicareAPI.getUnreadNotificationCount();
+        if (countResponse && countResponse.status) {
+          const countEl = document.getElementById('notificationCount');
+          if (countEl) {
+            countEl.textContent = countResponse.data.count;
+          }
+        }
+
+        // Load recent notifications
+        const notificationsResponse = await maxicareAPI.getNotifications(1, 5);
+        if (notificationsResponse && notificationsResponse.status) {
+          updateNotificationsList(notificationsResponse.data.notifications);
+        } else {
+          showNoNotificationsMessage();
+        }
+      } catch (error) {
+        console.error('Error loading notifications:', error);
+        showNoNotificationsMessage();
+      }
+    }
+
+    function updateNotificationsList(notifications) {
+      const notificationsList = document.getElementById('notificationsList');
+      if (!notificationsList) return;
+
+      if (notifications.length === 0) {
+        showNoNotificationsMessage();
+        return;
+      }
+
+      notificationsList.innerHTML = notifications.map(notification => `
+        <a href="javascript:void(0)" 
+           class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between ${notification.isRead ? '' : 'bg-neutral-50'}"
+           onclick="markNotificationAsRead(${notification.id})">
+          <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
+            <span class="w-44-px h-44-px ${getNotificationIconClass(notification.type)} rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+              <iconify-icon icon="${getNotificationIcon(notification.type)}" class="icon text-xxl"></iconify-icon>
+            </span>
+            <div>
+              <h6 class="text-md fw-semibold mb-4">${notification.title}</h6>
+              <p class="mb-0 text-sm text-secondary-light text-w-200-px">${notification.message}</p>
+            </div>
+          </div>
+          <span class="text-sm text-secondary-light flex-shrink-0">${formatTimeAgo(notification.createdAt)}</span>
+        </a>
+      `).join('');
+    }
+
+    function showNoNotificationsMessage() {
+      const notificationsList = document.getElementById('notificationsList');
+      if (!notificationsList) return;
+
+      notificationsList.innerHTML = `
+        <div class="text-center py-4">
+          <iconify-icon icon="solar:bell-outline" class="icon text-4xl text-secondary-light mb-2"></iconify-icon>
+          <p class="text-secondary-light mb-0">No notifications</p>
+        </div>
+      `;
+    }
+
+    function getNotificationIcon(type) {
+      const iconMap = {
+        'shift_assigned': 'solar:clock-circle-outline',
+        'shift_completed': 'solar:check-circle-outline',
+        'shift_cancelled': 'solar:close-circle-outline',
+        'user_registered': 'solar:user-plus-outline',
+        'system_announcement': 'solar:megaphone-outline',
+        'shift_reminder': 'solar:alarm-outline',
+        'payment_processed': 'solar:wallet-outline',
+        'profile_updated': 'solar:user-outline',
+        'password_changed': 'solar:lock-outline',
+        'login_attempt': 'solar:login-3-outline'
+      };
+      return iconMap[type] || 'solar:bell-outline';
+    }
+
+    function getNotificationIconClass(type) {
+      const classMap = {
+        'shift_assigned': 'bg-primary-subtle text-primary-main',
+        'shift_completed': 'bg-success-subtle text-success-main',
+        'shift_cancelled': 'bg-danger-subtle text-danger-main',
+        'user_registered': 'bg-info-subtle text-info-main',
+        'system_announcement': 'bg-warning-subtle text-warning-main',
+        'shift_reminder': 'bg-warning-subtle text-warning-main',
+        'payment_processed': 'bg-success-subtle text-success-main',
+        'profile_updated': 'bg-info-subtle text-info-main',
+        'password_changed': 'bg-warning-subtle text-warning-main',
+        'login_attempt': 'bg-info-subtle text-info-main'
+      };
+      return classMap[type] || 'bg-secondary-subtle text-secondary-main';
+    }
+
+    async function markNotificationAsRead(notificationId) {
+      try {
+        await maxicareAPI.markNotificationAsRead(notificationId);
+        // Reload notifications to update the UI
+        await loadNotifications();
+      } catch (error) {
+        console.error('Error marking notification as read:', error);
+      }
+    }
+
+    function setupUserInfo() {
+      const currentUser = authService.getCurrentUser();
+      if (!currentUser) return;
+
+      // Update user name in navigation
+      const userNameElement = document.querySelector('.user-name');
+      if (userNameElement) {
+        userNameElement.textContent = currentUser.firstname && currentUser.lastname 
+          ? `${currentUser.firstname} ${currentUser.lastname}`
+          : currentUser.username || currentUser.email;
+      }
+
+      // Update user role in navigation
+      const userRoleElement = document.querySelector('.user-role');
+      if (userRoleElement) {
+        userRoleElement.textContent = 'Employee';
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Confirmation - MaxiCare</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+    <!-- remix icon font css  -->
+    <link rel="stylesheet" href="assets/css/remixicon.css">
+    <!-- BootStrap css -->
+    <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
+    <!-- main css -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <section class="auth bg-base d-flex flex-wrap">
+        <div class="auth-left d-lg-block d-none">
+            <div class="d-flex align-items-center flex-column h-100 justify-content-center">
+                <img src="assets/images/auth/auth-img.png" alt="">
+            </div>
+        </div>
+        <div class="auth-right py-32 px-24 d-flex flex-column justify-content-center">
+            <div class="max-w-464-px mx-auto w-100">
+                <div class="text-center mb-40">
+                    <a href="index.html" class="mb-40 max-w-290-px">
+                        <img src="assets/images/logo.png" alt="">
+                    </a>
+                </div>
+                
+                <!-- Loading State -->
+                <div id="loadingState" class="text-center">
+                    <div class="mb-32">
+                        <iconify-icon icon="eos-icons:loading" class="text-primary-600" style="font-size: 48px;"></iconify-icon>
+                    </div>
+                    <h4 class="mb-12">Confirming your email...</h4>
+                    <p class="text-secondary-light text-lg">Please wait while we verify your email address.</p>
+                </div>
+
+                <!-- Success State -->
+                <div id="successState" class="text-center" style="display: none;">
+                    <div class="mb-32">
+                        <iconify-icon icon="solar:check-circle-bold" class="text-success" style="font-size: 48px;"></iconify-icon>
+                    </div>
+                    <h4 class="mb-12 text-success">Email Confirmed!</h4>
+                    <p class="text-secondary-light text-lg mb-32">Your email has been successfully confirmed. You can now sign in to your account.</p>
+                    <a href="sign-in.html" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12">
+                        Sign In to Your Account
+                    </a>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="text-center" style="display: none;">
+                    <div class="mb-32">
+                        <iconify-icon icon="solar:close-circle-bold" class="text-danger" style="font-size: 48px;"></iconify-icon>
+                    </div>
+                    <h4 class="mb-12 text-danger">Confirmation Failed</h4>
+                    <p class="text-secondary-light text-lg mb-32" id="errorMessage">The confirmation link is invalid or has expired.</p>
+                    <div class="d-flex gap-3">
+                        <a href="sign-up.html" class="btn btn-outline-primary text-sm btn-sm px-12 py-16 flex-fill radius-12">
+                            Sign Up Again
+                        </a>
+                        <a href="sign-in.html" class="btn btn-primary text-sm btn-sm px-12 py-16 flex-fill radius-12">
+                            Sign In
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Resend Email Section -->
+                <div id="resendSection" class="mt-32 text-center" style="display: none;">
+                    <p class="text-sm text-secondary-light mb-16">Didn't receive a confirmation email?</p>
+                    <button id="resendBtn" class="btn btn-link text-primary-600 fw-semibold p-0">
+                        Resend Confirmation Email
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery library js -->
+    <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
+    <!-- Iconify Font js -->
+    <script src="assets/js/lib/iconify-icon.min.js"></script>
+    <!-- API service -->
+    <script src="assets/js/api.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            
+            const loadingState = document.getElementById('loadingState');
+            const successState = document.getElementById('successState');
+            const errorState = document.getElementById('errorState');
+            const resendSection = document.getElementById('resendSection');
+            const errorMessage = document.getElementById('errorMessage');
+            const resendBtn = document.getElementById('resendBtn');
+
+            if (!token) {
+                showError('No confirmation token provided.');
+                return;
+            }
+
+            // Confirm email
+            confirmEmail(token);
+
+            async function confirmEmail(token) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/auth/confirm?token=${token}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.status) {
+                        showSuccess();
+                    } else {
+                        showError(data.message || 'Email confirmation failed.');
+                    }
+                } catch (error) {
+                    console.error('Confirmation error:', error);
+                    showError('An error occurred while confirming your email. Please try again.');
+                }
+            }
+
+            function showSuccess() {
+                loadingState.style.display = 'none';
+                successState.style.display = 'block';
+            }
+
+            function showError(message) {
+                loadingState.style.display = 'none';
+                errorState.style.display = 'block';
+                errorMessage.textContent = message;
+                resendSection.style.display = 'block';
+            }
+
+            // Resend confirmation email
+            resendBtn.addEventListener('click', function() {
+                const email = prompt('Please enter your email address to resend the confirmation email:');
+                if (email) {
+                    resendConfirmationEmail(email);
+                }
+            });
+
+            async function resendConfirmationEmail(email) {
+                try {
+                    resendBtn.disabled = true;
+                    resendBtn.textContent = 'Sending...';
+
+                    const result = await maxicareAPI.resendConfirmation(email);
+
+                    if (result.status) {
+                        alert('Confirmation email sent! Please check your inbox.');
+                    } else {
+                        alert(result.message || 'Failed to resend confirmation email.');
+                    }
+                } catch (error) {
+                    console.error('Resend error:', error);
+                    alert(error.message || 'An error occurred. Please try again.');
+                } finally {
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = 'Resend Confirmation Email';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Connection Test - MaxiCare</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+    <!-- remix icon font css  -->
+    <link rel="stylesheet" href="assets/css/remixicon.css">
+    <!-- BootStrap css -->
+    <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
+    <!-- main css -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <section class="auth bg-base d-flex flex-wrap">
+        <div class="auth-left d-lg-block d-none">
+            <div class="d-flex align-items-center flex-column h-100 justify-content-center">
+                <img src="assets/images/auth/auth-img.png" alt="">
+            </div>
+        </div>
+        <div class="auth-right py-32 px-24 d-flex flex-column justify-content-center">
+            <div class="max-w-464-px mx-auto w-100">
+                <div class="text-center mb-40">
+                    <a href="index.html" class="mb-40 max-w-290-px">
+                        <img src="assets/images/logo.png" alt="">
+                    </a>
+                </div>
+                
+                <h4 class="mb-12">Backend Connection Test</h4>
+                <p class="mb-32 text-secondary-light text-lg">Testing connection to MaxiCare backend server</p>
+                
+                <div id="testResults" class="mb-32">
+                    <!-- Test results will be displayed here -->
+                </div>
+
+                <div class="d-flex gap-3">
+                    <button id="testConnectionBtn" class="btn btn-primary text-sm btn-sm px-12 py-16 flex-fill radius-12">
+                        <span class="btn-text">Test Connection</span>
+                        <span class="btn-spinner" style="display: none;">
+                            <iconify-icon icon="eos-icons:loading" class="icon-spin"></iconify-icon>
+                        </span>
+                    </button>
+                    <a href="sign-in.html" class="btn btn-outline-primary text-sm btn-sm px-12 py-16 flex-fill radius-12">
+                        Go to Sign In
+                    </a>
+                </div>
+
+                <div class="mt-32">
+                    <h6 class="mb-16">Backend Information:</h6>
+                    <ul class="text-sm text-secondary-light">
+                        <li><strong>Base URL:</strong> http://localhost:3000/api</li>
+                        <li><strong>Expected Endpoints:</strong></li>
+                        <li>• POST /auth/signin</li>
+                        <li>• POST /auth/user/signup</li>
+                        <li>• POST /auth/logout</li>
+                        <li>• GET /auth/confirm</li>
+                        <li>• POST /auth/request-password-reset</li>
+                        <li>• POST /auth/reset-password</li>
+                        <li>• POST /auth/resend-confirmation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery library js -->
+    <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
+    <!-- Iconify Font js -->
+    <script src="assets/js/lib/iconify-icon.min.js"></script>
+    <!-- API service -->
+    <script src="assets/js/api.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const testBtn = document.getElementById('testConnectionBtn');
+            const btnText = testBtn.querySelector('.btn-text');
+            const btnSpinner = testBtn.querySelector('.btn-spinner');
+            const resultsDiv = document.getElementById('testResults');
+
+            testBtn.addEventListener('click', async function() {
+                testBtn.disabled = true;
+                btnText.style.display = 'none';
+                btnSpinner.style.display = 'inline-block';
+                resultsDiv.innerHTML = '';
+
+                const tests = [
+                    { name: 'Auth Health Check', endpoint: '/api/auth/health', method: 'GET' },
+                    { name: 'Basic Connection', endpoint: '/api/auth/signin', method: 'POST', body: { email: 'test@test.com', password: 'test123' } },
+                    { name: 'API Documentation', endpoint: '/docs', method: 'GET' }
+                ];
+
+                let results = '<h6 class="mb-16">Test Results:</h6>';
+
+                for (const test of tests) {
+                    try {
+                        const startTime = Date.now();
+                        const response = await fetch(`http://localhost:3000${test.endpoint}`, {
+                            method: test.method,
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: test.body ? JSON.stringify(test.body) : undefined
+                        });
+                        const endTime = Date.now();
+                        const responseTime = endTime - startTime;
+
+                        if (response.ok || response.status === 400 || response.status === 401) {
+                            results += `
+                                <div class="alert alert-success mb-12">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><iconify-icon icon="solar:check-circle-bold" class="text-success me-2"></iconify-icon>${test.name}</span>
+                                        <span class="text-sm">${responseTime}ms</span>
+                                    </div>
+                                    <small>Status: ${response.status} ${response.statusText}</small>
+                                </div>
+                            `;
+                        } else {
+                            results += `
+                                <div class="alert alert-warning mb-12">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><iconify-icon icon="solar:warning-circle-bold" class="text-warning me-2"></iconify-icon>${test.name}</span>
+                                        <span class="text-sm">${responseTime}ms</span>
+                                    </div>
+                                    <small>Status: ${response.status} ${response.statusText}</small>
+                                </div>
+                            `;
+                        }
+                    } catch (error) {
+                        results += `
+                            <div class="alert alert-danger mb-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span><iconify-icon icon="solar:close-circle-bold" class="text-danger me-2"></iconify-icon>${test.name}</span>
+                                    <span class="text-sm">Failed</span>
+                                </div>
+                                <small>Error: ${error.message}</small>
+                            </div>
+                        `;
+                    }
+                }
+
+                resultsDiv.innerHTML = results;
+
+                testBtn.disabled = false;
+                btnText.style.display = 'inline-block';
+                btnSpinner.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

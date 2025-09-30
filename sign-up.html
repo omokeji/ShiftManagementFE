@@ -1,0 +1,547 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaxiCare Admin Booking</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+    <!-- remix icon font css  -->
+    <link rel="stylesheet" href="assets/css/remixicon.css">
+    <!-- BootStrap css -->
+    <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
+    <!-- Apex Chart css -->
+    <link rel="stylesheet" href="assets/css/lib/apexcharts.css">
+    <!-- Data Table css -->
+    <link rel="stylesheet" href="assets/css/lib/dataTables.min.css">
+    <!-- Text Editor css -->
+    <link rel="stylesheet" href="assets/css/lib/editor-katex.min.css">
+    <link rel="stylesheet" href="assets/css/lib/editor.atom-one-dark.min.css">
+    <link rel="stylesheet" href="assets/css/lib/editor.quill.snow.css">
+    <!-- Date picker css -->
+    <link rel="stylesheet" href="assets/css/lib/flatpickr.min.css">
+    <!-- Calendar css -->
+    <link rel="stylesheet" href="assets/css/lib/full-calendar.css">
+    <!-- Vector Map css -->
+    <link rel="stylesheet" href="assets/css/lib/jquery-jvectormap-2.0.5.css">
+    <!-- Popup css -->
+    <link rel="stylesheet" href="assets/css/lib/magnific-popup.css">
+    <!-- Slick Slider css -->
+    <link rel="stylesheet" href="assets/css/lib/slick.css">
+    <!-- prism css -->
+    <link rel="stylesheet" href="assets/css/lib/prism.css">
+    <!-- file upload css -->
+    <link rel="stylesheet" href="assets/css/lib/file-upload.css">
+
+    <link rel="stylesheet" href="assets/css/lib/audioplayer.css">
+    <!-- main css -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <section class="auth bg-base d-flex flex-wrap">
+        <div class="auth-left d-lg-block d-none">
+            <div class="d-flex align-items-center flex-column h-100 justify-content-center">
+                <img src="assets/images/auth/auth-img.png" alt="">
+            </div>
+        </div>
+        <div class="auth-right py-32 px-24 d-flex flex-column justify-content-center">
+            <div class="max-w-464-px mx-auto w-100">
+                <div>
+                    <a href="index.html" class="mb-40 max-w-290-px">
+                        <img src="assets/images/logo.png" alt="">
+                    </a>
+                    <h4 class="mb-12">Sign Up to your Account</h4>
+                    <p class="mb-32 text-secondary-light text-lg">Welcome back! please enter your detail</p>
+                </div>
+                <form id="signupForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="icon-field mb-16">
+                                <span class="icon top-50 translate-middle-y">
+                                    <iconify-icon icon="f7:person"></iconify-icon>
+                                </span>
+                                <input type="text" id="username" name="username" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Username" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="icon-field mb-16">
+                                <span class="icon top-50 translate-middle-y">
+                                    <iconify-icon icon="mage:email"></iconify-icon>
+                                </span>
+                                <input type="email" id="email" name="email" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Email" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="icon-field mb-16">
+                                <span class="icon top-50 translate-middle-y">
+                                    <iconify-icon icon="f7:person"></iconify-icon>
+                                </span>
+                                <input type="text" id="firstname" name="firstname" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="First Name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="icon-field mb-16">
+                                <span class="icon top-50 translate-middle-y">
+                                    <iconify-icon icon="f7:person"></iconify-icon>
+                                </span>
+                                <input type="text" id="lastname" name="lastname" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Last Name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="icon-field mb-16">
+                                <span class="icon top-50 translate-middle-y">
+                                    <iconify-icon icon="solar:phone-outline"></iconify-icon>
+                                </span>
+                                <input type="tel" id="phone" name="phone" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Phone Number" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="icon-field mb-16">
+                                <span class="icon top-50 translate-middle-y">
+                                    <iconify-icon icon="solar:case-outline"></iconify-icon>
+                                </span>
+                                <input type="text" id="title" name="title" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Job Title" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="icon-field mb-16">
+                        <span class="icon top-50 translate-middle-y">
+                            <iconify-icon icon="solar:users-group-rounded-outline"></iconify-icon>
+                        </span>
+                        <select id="team" name="team" class="form-control h-56-px bg-neutral-50 radius-12" required>
+                            <option value="">Select Team Type</option>
+                            <option value="RN">Registered Nurse (RN)</option>
+                            <option value="LPN">Licensed Practical Nurse (LPN)</option>
+                            <option value="CNA">Certified Nursing Assistant (CNA)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-20">
+                        <div class="position-relative ">
+                            <div class="icon-field">
+                                <span class="icon top-50 translate-middle-y">
+                                    <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
+                                </span>
+                                <input type="password" id="password" name="password" class="form-control h-56-px bg-neutral-50 radius-12"
+                                    placeholder="Password" required>
+                            </div>
+                            <span
+                                class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
+                                data-toggle="#password"></span>
+                        </div>
+                        <div class="mt-12">
+                            <div class="d-flex justify-content-between align-items-center mb-8">
+                                <span class="text-sm text-secondary-light">Password strength:</span>
+                                <span id="passwordStrengthText" class="text-sm fw-semibold">Weak</span>
+                            </div>
+                            <div class="progress" style="height: 4px;">
+                                <div id="passwordStrengthBar" class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div class="mt-8">
+                                <small class="text-secondary-light">Must contain: uppercase, lowercase, number, and 8+ characters</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="d-flex justify-content-between gap-2">
+                            <div class="form-check style-check d-flex align-items-start">
+                                <input class="form-check-input border border-neutral-300 mt-4" type="checkbox" value=""
+                                    id="condition">
+                                <label class="form-check-label text-sm" for="condition">
+                                    By creating an account means you agree to the
+                                    <a href="terms-condition.html" class="text-primary-600 fw-semibold" target="_blank">Terms &
+                                        Conditions</a> and our
+                                    <a href="privacy-policy.html" class="text-primary-600 fw-semibold" target="_blank">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
+                    <div id="successMessage" class="alert alert-success mt-3" style="display: none;"></div>
+
+                    <button type="submit" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32" id="signupBtn">
+                        <span class="btn-text">Sign Up</span>
+                        <span class="btn-spinner" style="display: none;">
+                            <iconify-icon icon="eos-icons:loading" class="icon-spin"></iconify-icon>
+                        </span>
+                    </button>
+
+                    <div class="mt-32 center-border-horizontal text-center">
+                        <span class="bg-base z-1 px-4">Or sign up with</span>
+                    </div>
+                    <div class="mt-32 d-flex align-items-center gap-3">
+                        <button type="button" id="googleSignUp"
+                            class="fw-semibold text-primary-light py-16 px-24 w-50 border radius-12 text-md d-flex align-items-center justify-content-center gap-12 line-height-1 bg-hover-primary-50">
+                            <iconify-icon icon="logos:google-icon"
+                                class="text-primary-600 text-xl line-height-1"></iconify-icon>
+                            Google
+                        </button>
+                        <button type="button" id="facebookSignUp"
+                            class="fw-semibold text-primary-light py-16 px-24 w-50 border radius-12 text-md d-flex align-items-center justify-content-center gap-12 line-height-1 bg-hover-primary-50">
+                            <iconify-icon icon="logos:facebook"
+                                class="text-primary-600 text-xl line-height-1"></iconify-icon>
+                            Facebook
+                        </button>
+                    </div>
+                    <div class="mt-32 text-center text-sm">
+                        <p class="mb-0">Already have an account? <a href="sign-in.html"
+                                class="text-primary-600 fw-semibold">Sign In</a></p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery library js -->
+    <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
+    <!-- Apex Chart js -->
+    <script src="assets/js/lib/apexcharts.min.js"></script>
+    <!-- Data Table js -->
+    <script src="assets/js/lib/dataTables.min.js"></script>
+    <!-- Iconify Font js -->
+    <script src="assets/js/lib/iconify-icon.min.js"></script>
+    <!-- jQuery UI js -->
+    <script src="assets/js/lib/jquery-ui.min.js"></script>
+    <!-- Vector Map js -->
+    <script src="assets/js/lib/jquery-jvectormap-2.0.5.min.js"></script>
+    <script src="assets/js/lib/jquery-jvectormap-world-mill-en.js"></script>
+    <!-- Popup js -->
+    <script src="assets/js/lib/magnifc-popup.min.js"></script>
+    <!-- Slick Slider js -->
+    <script src="assets/js/lib/slick.min.js"></script>
+    <!-- prism js -->
+    <script src="assets/js/lib/prism.js"></script>
+    <!-- file upload js -->
+    <script src="assets/js/lib/file-upload.js"></script>
+    <!-- audioplayer -->
+    <script src="assets/js/lib/audioplayer.js"></script>
+
+    <!-- API and Auth services -->
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <!-- main js -->
+    <script src="assets/js/app.js"></script>
+
+    <script>
+        // Ensure API is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof maxicareAPI === 'undefined') {
+                console.error('maxicareAPI is not defined. Please check if api.js is loaded correctly.');
+                return;
+            }
+            console.log('maxicareAPI loaded successfully');
+        });
+
+        // ================== Password Show Hide Js Start ==========
+        function initializePasswordToggle(toggleSelector) {
+            $(toggleSelector).on('click', function () {
+                $(this).toggleClass("ri-eye-off-line");
+                var input = $($(this).attr("data-toggle"));
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
+            });
+        }
+        // Call the function
+        initializePasswordToggle('.toggle-password');
+        // ========================= Password Show Hide Js End ===========================
+
+        // Password strength indicator
+        function checkPasswordStrength(password) {
+            let score = 0;
+            let feedback = [];
+
+            // Length check
+            if (password.length >= 8) {
+                score += 25;
+            } else {
+                feedback.push('at least 8 characters');
+            }
+
+            // Lowercase check
+            if (/[a-z]/.test(password)) {
+                score += 25;
+            } else {
+                feedback.push('lowercase letter');
+            }
+
+            // Uppercase check
+            if (/[A-Z]/.test(password)) {
+                score += 25;
+            } else {
+                feedback.push('uppercase letter');
+            }
+
+            // Number check
+            if (/\d/.test(password)) {
+                score += 25;
+            } else {
+                feedback.push('number');
+            }
+
+            // Special character bonus
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                score = Math.min(score + 10, 100);
+            }
+
+            return { score, feedback };
+        }
+
+        function updatePasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+
+            if (password.length === 0) {
+                strengthBar.style.width = '0%';
+                strengthBar.className = 'progress-bar bg-secondary';
+                strengthText.textContent = '';
+                return;
+            }
+
+            const { score, feedback } = checkPasswordStrength(password);
+
+            strengthBar.style.width = score + '%';
+
+            if (score < 25) {
+                strengthBar.className = 'progress-bar bg-danger';
+                strengthText.textContent = 'Very Weak';
+                strengthText.className = 'text-sm fw-semibold text-danger';
+            } else if (score < 50) {
+                strengthBar.className = 'progress-bar bg-warning';
+                strengthText.textContent = 'Weak';
+                strengthText.className = 'text-sm fw-semibold text-warning';
+            } else if (score < 75) {
+                strengthBar.className = 'progress-bar bg-info';
+                strengthText.textContent = 'Good';
+                strengthText.className = 'text-sm fw-semibold text-info';
+            } else if (score < 100) {
+                strengthBar.className = 'progress-bar bg-primary';
+                strengthText.textContent = 'Strong';
+                strengthText.className = 'text-sm fw-semibold text-primary';
+            } else {
+                strengthBar.className = 'progress-bar bg-success';
+                strengthText.textContent = 'Very Strong';
+                strengthText.className = 'text-sm fw-semibold text-success';
+            }
+        }
+
+        // Add event listener for password strength
+        document.getElementById('password').addEventListener('input', updatePasswordStrength);
+
+        // Form validation
+        function validateForm() {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const firstname = document.getElementById('firstname').value.trim();
+            const lastname = document.getElementById('lastname').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const title = document.getElementById('title').value.trim();
+            const team = document.getElementById('team').value;
+            const password = document.getElementById('password').value;
+            const condition = document.getElementById('condition').checked;
+
+            if (!username || !email || !firstname || !lastname || !phone || !title || !team || !password) {
+                return 'Please fill in all required fields.';
+            }
+
+            if (!condition) {
+                return 'Please accept the Terms & Conditions and Privacy Policy.';
+            }
+
+            // Username validation
+            const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+            if (!usernameRegex.test(username)) {
+                return 'Username must be 3-20 characters long and contain only letters, numbers, and underscores.';
+            }
+
+            // Name validation
+            const nameRegex = /^[a-zA-Z\s]{2,50}$/;
+            if (!nameRegex.test(firstname)) {
+                return 'First name must be 2-50 characters long and contain only letters and spaces.';
+            }
+            if (!nameRegex.test(lastname)) {
+                return 'Last name must be 2-50 characters long and contain only letters and spaces.';
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                return 'Please enter a valid email address.';
+            }
+
+            // Phone validation
+            const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+            if (!phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+                return 'Please enter a valid phone number.';
+            }
+
+            // Title validation
+            const titleRegex = /^[a-zA-Z\s\-]{2,100}$/;
+            if (!titleRegex.test(title)) {
+                return 'Job title must be 2-100 characters long and contain only letters, spaces, and hyphens.';
+            }
+
+            // Team validation
+            if (!['RN', 'LPN', 'CNA'].includes(team)) {
+                return 'Please select a valid team type.';
+            }
+
+            // Password validation
+            if (password.length < 8) {
+                return 'Password must be at least 8 characters long.';
+            }
+
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+            if (!passwordRegex.test(password)) {
+                return 'Password must contain at least one lowercase letter, one uppercase letter, and one number.';
+            }
+
+            return null;
+        }
+
+        // Sign-up form handling
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if API is available
+            if (typeof maxicareAPI === 'undefined') {
+                console.error('maxicareAPI is not available. Please refresh the page.');
+                return;
+            }
+
+            document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const signupBtn = document.getElementById('signupBtn');
+            const btnText = signupBtn.querySelector('.btn-text');
+            const btnSpinner = signupBtn.querySelector('.btn-spinner');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            // Clear previous messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Validate form
+            const validationError = validateForm();
+            if (validationError) {
+                errorMessage.textContent = validationError;
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Show loading state
+            signupBtn.disabled = true;
+            btnText.style.display = 'none';
+            btnSpinner.style.display = 'inline-block';
+
+            try {
+                const formData = {
+                    username: document.getElementById('username').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    firstname: document.getElementById('firstname').value.trim(),
+                    lastname: document.getElementById('lastname').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    title: document.getElementById('title').value.trim(),
+                    team: document.getElementById('team').value,
+                    password: document.getElementById('password').value,
+                    role: 'user'
+                };
+          
+                const result = await maxicareAPI.signUp(formData);
+                
+                console.log('Signup result:', result);
+                
+                // Check for both 'success' and 'status' fields
+                if (result.success || result.status) {
+                    // Hide error message and show success message
+                    errorMessage.style.display = 'none';
+                    successMessage.innerHTML = `
+                        <strong>Account created successfully!</strong><br>
+                        Please check your email for confirmation instructions.<br>
+                        <small>Redirecting to login page in 3 seconds...</small>
+                    `;
+                    successMessage.style.display = 'block';
+                    successMessage.className = 'alert alert-success mt-3';
+                    
+                    // Clear form
+                    document.getElementById('signupForm').reset();
+                    
+                    // Redirect to sign-in page after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'sign-in.html';
+                    }, 3000);
+                } else {
+                    // Hide success message and show error message
+                    successMessage.style.display = 'none';
+                    errorMessage.textContent = result.message || 'Signup failed. Please try again.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                // Handle different types of errors
+                let errorMsg = 'An error occurred. Please try again.';
+                
+                if (error.message) {
+                    if (error.message.includes('Email is already registered')) {
+                        errorMsg = 'This email is already registered. Please use a different email or try signing in.';
+                    } else if (error.message.includes('validation') || error.message.includes('must be')) {
+                        errorMsg = error.message;
+                    } else if (error.message.includes('network') || error.message.includes('fetch')) {
+                        errorMsg = 'Unable to connect to the server. Please check your internet connection and try again.';
+                    } else {
+                        errorMsg = error.message;
+                    }
+                }
+                
+                errorMessage.textContent = errorMsg;
+                errorMessage.style.display = 'block';
+                console.error('Signup error:', error);
+            } finally {
+                // Reset button state
+                signupBtn.disabled = false;
+                btnText.style.display = 'inline-block';
+                btnSpinner.style.display = 'none';
+            }
+            });
+        });
+
+        // Social login functionality and other initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('googleSignUp').addEventListener('click', function() {
+                // For demo purposes, we'll simulate Google signup
+                // In production, you would integrate with Google OAuth
+                alert('Google Sign-Up integration would be implemented here.\n\nFor demo purposes, this would redirect to Google OAuth flow.');
+            });
+
+            document.getElementById('facebookSignUp').addEventListener('click', function() {
+                // For demo purposes, we'll simulate Facebook signup
+                // In production, you would integrate with Facebook OAuth
+                alert('Facebook Sign-Up integration would be implemented here.\n\nFor demo purposes, this would redirect to Facebook OAuth flow.');
+            });
+
+            // Check if user is already logged in
+            if (typeof authService !== 'undefined' && authService.isLoggedIn()) {
+                authService.redirectToDashboard();
+            }
+        });
+    </script>
+
+</body>
+
+</html>

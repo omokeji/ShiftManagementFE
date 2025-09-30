@@ -1,0 +1,781 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaxiCare Admin Booking</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+  <!-- remix icon font css  -->
+  <link rel="stylesheet" href="assets/css/remixicon.css">
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
+  <!-- Apex Chart css -->
+  <link rel="stylesheet" href="assets/css/lib/apexcharts.css">
+  <!-- Data Table css -->
+  <link rel="stylesheet" href="assets/css/lib/dataTables.min.css">
+  <!-- Text Editor css -->
+  <link rel="stylesheet" href="assets/css/lib/editor-katex.min.css">
+  <link rel="stylesheet" href="assets/css/lib/editor.atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/css/lib/editor.quill.snow.css">
+  <!-- Date picker css -->
+  <link rel="stylesheet" href="assets/css/lib/flatpickr.min.css">
+  <!-- Calendar css -->
+  <link rel="stylesheet" href="assets/css/lib/full-calendar.css">
+  <!-- Vector Map css -->
+  <link rel="stylesheet" href="assets/css/lib/jquery-jvectormap-2.0.5.css">
+  <!-- Popup css -->
+  <link rel="stylesheet" href="assets/css/lib/magnific-popup.css">
+  <!-- Slick Slider css -->
+  <link rel="stylesheet" href="assets/css/lib/slick.css">
+  <!-- prism css -->
+  <link rel="stylesheet" href="assets/css/lib/prism.css">
+  <!-- file upload css -->
+  <link rel="stylesheet" href="assets/css/lib/file-upload.css">
+
+  <link rel="stylesheet" href="assets/css/lib/audioplayer.css">
+  <!-- main css -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <aside class="sidebar">
+    <button type="button" class="sidebar-close-btn">
+      <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+    </button>
+    <div>
+      <a href="index.html" class="sidebar-logo">
+        <img src="assets/images/logo.png" alt="site logo" class="light-logo">
+        <img src="assets/images/logo-light.png" alt="site logo" class="dark-logo">
+        <img src="assets/images/logo-icon.png" alt="site logo" class="logo-icon">
+      </a>
+    </div>
+    <div class="sidebar-menu-area">
+      <ul class="sidebar-menu" id="sidebar-menu">
+        <li>
+          <a href="index.html">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="disabled-link" style="opacity: 0.5; cursor: not-allowed;">
+            <iconify-icon icon="solar:calendar-outline" class="menu-icon"></iconify-icon>
+            <span>Calendar (Disabled)</span>
+          </a>
+        </li>
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
+            <span>Users</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="users-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users
+                List</a>
+            </li>
+            <li>
+              <a href="add-user.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add User</a>
+            </li>
+            <li>
+              <a href="view-profile.html"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> View
+                Profile</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <i class="ri-user-settings-line text-xl me-14 d-flex w-auto"></i>
+            <span>Role & Access</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="role-access.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Role &
+                Access</a>
+            </li>
+            <li>
+              <a href="assign-role.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Assign
+                Role</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <iconify-icon icon="solar:briefcase-outline" class="menu-icon"></iconify-icon>
+            <span>Job Types</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="job-types.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Job Types List</a>
+            </li>
+            <li>
+              <a href="add-job-type.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add Job Type</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <iconify-icon icon="solar:clock-circle-outline" class="menu-icon"></iconify-icon>
+            <span>Shift Management</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="add-shift.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Add Shift</a>
+            </li>
+            <li>
+              <a href="view-shifts.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> View Shifts</a>
+            </li>
+          <li>
+            <a href="clock-change-requests.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Clock Change Requests</a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" onclick="showShiftReports()"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Shift Reports</a>
+          </li>
+        </ul>
+      </li>
+
+        <li class="employee-only">
+          <a href="my-shifts.html">
+            <iconify-icon icon="solar:clock-circle-outline" class="menu-icon"></iconify-icon>
+            <span>My Shifts</span>
+          </a>
+        </li>
+
+        <li class="employee-only">
+          <a href="available-shifts.html">
+            <iconify-icon icon="solar:calendar-add-outline" class="menu-icon"></iconify-icon>
+            <span>Available Shifts</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="navbar-header">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-4">
+            <button type="button" class="sidebar-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon text-2xl non-active"></iconify-icon>
+              <iconify-icon icon="iconoir:arrow-right" class="icon text-2xl active"></iconify-icon>
+            </button>
+            <button type="button" class="sidebar-mobile-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
+            </button>
+            <form class="navbar-search">
+              <input type="text" name="search" placeholder="Search">
+              <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+            </form>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <button type="button" data-theme-toggle
+              class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>
+
+            <div class="dropdown">
+              <button
+                class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"
+                type="button" data-bs-toggle="dropdown">
+                <iconify-icon icon="iconoir:bell" class="text-primary-light text-xl"></iconify-icon>
+              </button>
+              <div class="dropdown-menu to-top dropdown-menu-lg p-0">
+                <div
+                  class="m-16 py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                  <div>
+                    <h6 class="text-lg text-primary-light fw-semibold mb-0">Notifications</h6>
+                  </div>
+                  <span
+                    class="text-primary-600 fw-semibold text-lg w-40-px h-40-px rounded-circle bg-base d-flex justify-content-center align-items-center" id="notificationCount">0</span>
+                </div>
+
+                
+                <div class="max-h-400-px overflow-y-auto scroll-sm pe-4" id="notificationsList">
+                  <!-- Notifications will be loaded here -->
+                  <div class="text-center py-3">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-secondary-light text-sm">Loading notifications...</p>
+                  </div>
+                </div>
+                    </div>
+                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
+                  </a>
+
+                  <a href="javascript:void(0)"
+                    class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between bg-neutral-50">
+                    <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
+                      <span
+                        class="w-44-px h-44-px bg-success-subtle text-success-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+                        <img src="assets/images/notification/profile-1.png" alt="">
+                      </span>
+                      <div>
+                        <h6 class="text-md fw-semibold mb-4">Ronald Richards</h6>
+                        <p class="mb-0 text-sm text-secondary-light text-w-200-px">You can stitch between artboards</p>
+                      </div>
+                    </div>
+                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
+                  </a>
+
+                  <a href="javascript:void(0)"
+                    class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between">
+                    <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
+                      <span
+                        class="w-44-px h-44-px bg-info-subtle text-info-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+                        AM
+                      </span>
+                      <div>
+                        <h6 class="text-md fw-semibold mb-4">Arlene McCoy</h6>
+                        <p class="mb-0 text-sm text-secondary-light text-w-200-px">Invite you to prototyping</p>
+                      </div>
+                    </div>
+                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
+                  </a>
+
+                  <a href="javascript:void(0)"
+                    class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between bg-neutral-50">
+                    <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
+                      <span
+                        class="w-44-px h-44-px bg-success-subtle text-success-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+                        <img src="assets/images/notification/profile-2.png" alt="">
+                      </span>
+                      <div>
+                        <h6 class="text-md fw-semibold mb-4">Annette Black</h6>
+                        <p class="mb-0 text-sm text-secondary-light text-w-200-px">Invite you to prototyping</p>
+                      </div>
+                    </div>
+                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
+                  </a>
+
+                  <a href="javascript:void(0)"
+                    class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between">
+                    <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
+                      <span
+                        class="w-44-px h-44-px bg-info-subtle text-info-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+                        DR
+                      </span>
+                      <div>
+                        <h6 class="text-md fw-semibold mb-4">Darlene Robertson</h6>
+                        <p class="mb-0 text-sm text-secondary-light text-w-200-px">Invite you to prototyping</p>
+                      </div>
+                    </div>
+                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
+                  </a>
+                </div>
+
+                <div class="text-center py-12 px-16">
+                  <a href="javascript:void(0)" class="text-primary-600 fw-semibold text-md">See All Notification</a>
+                </div>
+
+              </div>
+            </div><!-- Notification dropdown end -->
+
+            <div class="dropdown">
+              <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
+                data-bs-toggle="dropdown">
+                <img src="assets/images/user.png" alt="image" class="w-40-px h-40-px object-fit-cover rounded-circle">
+              </button>
+              <div class="dropdown-menu to-top dropdown-menu-sm">
+                <div
+                  class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                  <div>
+                    <h6 class="text-lg text-primary-light fw-semibold mb-2">Shaidul Islam</h6>
+                    <span class="text-secondary-light fw-medium text-sm">Admin</span>
+                  </div>
+                  <button type="button" class="hover-text-danger">
+                    <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
+                  </button>
+                </div>
+                <ul class="to-top-list">
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="view-profile.html">
+                      <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My Profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="email.html">
+                      <iconify-icon icon="tabler:message-check" class="icon text-xl"></iconify-icon> Inbox</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="company.html">
+                      <iconify-icon icon="icon-park-outline:setting-two" class="icon text-xl"></iconify-icon>
+                      Setting</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
+                      href="javascript:void(0)">
+                      <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </div><!-- Profile dropdown end -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-main-body">
+
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <h6 class="fw-semibold mb-0">Email</h6>
+        <ul class="d-flex align-items-center gap-2">
+          <li class="fw-medium">
+            <a href="index.html" class="d-flex align-items-center gap-1 hover-text-primary">
+              <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+              Dashboard
+            </a>
+          </li>
+          <li>-</li>
+          <li class="fw-medium">Components / Email</li>
+        </ul>
+      </div>
+
+      <div class="row gy-4">
+        <div class="col-xxl-3">
+          <div class="card h-100 p-0">
+            <div class="card-body p-24">
+              <button type="button"
+                class="btn btn-primary text-sm btn-sm px-12 py-12 w-100 radius-8 d-flex align-items-center gap-2 mb-16"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <iconify-icon icon="fa6-regular:square-plus" class="icon text-lg line-height-1"></iconify-icon>
+                Compose
+              </button>
+
+              <div class="mt-16">
+                <ul>
+                  <li class="item-active mb-4">
+                    <a href="email.html" class="bg-hover-primary-50 px-12 py-8 w-100 radius-8 text-secondary-light">
+                      <span class="d-flex align-items-center gap-10 justify-content-between w-100">
+                        <span class="d-flex align-items-center gap-10">
+                          <span class="icon text-xxl line-height-1 d-flex"><iconify-icon icon="uil:envelope"
+                              class="icon line-height-1"></iconify-icon></span>
+                          <span class="fw-semibold">Inbox</span>
+                        </span>
+                        <span class="fw-medium">800</span>
+                      </span>
+                    </a>
+                  </li>
+                  <li class="mb-4">
+                    <a href="starred.html" class="bg-hover-primary-50 px-12 py-8 w-100 radius-8 text-secondary-light">
+                      <span class="d-flex align-items-center gap-10 justify-content-between w-100">
+                        <span class="d-flex align-items-center gap-10">
+                          <span class="icon text-xxl line-height-1 d-flex"><iconify-icon icon="ph:star-bold"
+                              class="icon line-height-1"></iconify-icon></span>
+                          <span class="fw-semibold">Starred</span>
+                        </span>
+                        <span class="fw-medium">250</span>
+                      </span>
+                    </a>
+                  </li>
+                  <li class="mb-4">
+                    <a href="email.html" class="bg-hover-primary-50 px-12 py-8 w-100 radius-8 text-secondary-light">
+                      <span class="d-flex align-items-center gap-10 justify-content-between w-100">
+                        <span class="d-flex align-items-center gap-10">
+                          <span class="icon text-xxl line-height-1 d-flex"><iconify-icon icon="ion:paper-plane-outline"
+                              class="icon line-height-1"></iconify-icon></span>
+                          <span class="fw-semibold">Sent</span>
+                        </span>
+                        <span class="fw-medium">80</span>
+                      </span>
+                    </a>
+                  </li>
+                  <li class="mb-4">
+                    <a href="email.html" class="bg-hover-primary-50 px-12 py-8 w-100 radius-8 text-secondary-light">
+                      <span class="d-flex align-items-center gap-10 justify-content-between w-100">
+                        <span class="d-flex align-items-center gap-10">
+                          <span class="icon text-xxl line-height-1 d-flex"><iconify-icon icon="lucide:pencil"
+                              class="icon line-height-1"></iconify-icon></span>
+                          <span class="fw-semibold">Draft</span>
+                        </span>
+                        <span class="fw-medium">50</span>
+                      </span>
+                    </a>
+                  </li>
+                  <li class="mb-4">
+                    <a href="email.html" class="bg-hover-primary-50 px-12 py-8 w-100 radius-8 text-secondary-light">
+                      <span class="d-flex align-items-center gap-10 justify-content-between w-100">
+                        <span class="d-flex align-items-center gap-10">
+                          <span class="icon text-xxl line-height-1 d-flex"><iconify-icon icon="ph:warning-bold"
+                              class="icon line-height-1"></iconify-icon></span>
+                          <span class="fw-semibold">Spam</span>
+                        </span>
+                        <span class="fw-medium">30</span>
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="email.html" class="bg-hover-primary-50 px-12 py-8 w-100 radius-8 text-secondary-light">
+                      <span class="d-flex align-items-center gap-10 justify-content-between w-100">
+                        <span class="d-flex align-items-center gap-10">
+                          <span class="icon text-xxl line-height-1 d-flex"><iconify-icon
+                              icon="material-symbols:delete-outline" class="icon line-height-1"></iconify-icon></span>
+                          <span class="fw-semibold">Bin</span>
+                        </span>
+                        <span class="fw-medium">20</span>
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+                <div class="mt-24">
+                  <h6 class="text-lg fw-semibold text-primary-light mb-16">TAGS</h6>
+                  <ul>
+                    <li class="mb-20">
+                      <span
+                        class="line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-10">
+                        <span class="w-8-px h-8-px bg-primary-600 rounded-circle"></span>
+                        Personal
+                      </span>
+                    </li>
+                    <li class="mb-20">
+                      <span
+                        class="line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-10">
+                        <span class="w-8-px h-8-px bg-lilac-600 rounded-circle"></span>
+                        Social
+                      </span>
+                    </li>
+                    <li class="mb-20">
+                      <span
+                        class="line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-10">
+                        <span class="w-8-px h-8-px bg-success-600 rounded-circle"></span>
+                        Promotions
+                      </span>
+                    </li>
+                    <li class="mb-20">
+                      <span
+                        class="line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-10">
+                        <span class="w-8-px h-8-px bg-warning-600 rounded-circle"></span>
+                        Business
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-xxl-9">
+          <div class="card h-100 p-0 email-card overflow-x-auto d-block">
+            <div class="min-w-450-px d-flex flex-column justify-content-between h-100">
+              <div
+                class="card-header border-bottom bg-base py-16 px-24 d-flex align-items-center gap-3 justify-content-between flex-wrap">
+                <div class="d-flex align-items-center gap-2">
+                  <button class="text-secondary-light d-flex me-8"><iconify-icon icon="mingcute:arrow-left-line"
+                      class="icon fs-3 line-height-1"></iconify-icon></button>
+                  <h6 class="mb-0 text-lg">Kathryn Murphy</h6>
+                  <span class="bg-primary-50 text-primary-600 text-sm radius-4 px-8">Personal</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <button class="text-secondary-light d-flex"><iconify-icon icon="mi:print"
+                      class="icon text-xxl line-height-1"></iconify-icon></button>
+                  <button class="text-secondary-light d-flex"><iconify-icon icon="mdi:star-outline"
+                      class="icon text-xxl line-height-1"></iconify-icon></button>
+                  <button class="text-secondary-light d-flex"><iconify-icon icon="material-symbols:delete-outline"
+                      class="icon text-xxl line-height-1"></iconify-icon></button>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="py-16 px-24 border-bottom">
+                  <div class="d-flex align-items-start gap-3">
+                    <img src="assets/images/user-list/user-list1.png" alt="" class="w-40-px h-40-px rounded-pill">
+                    <div class="">
+                      <div class="d-flex align-items-center flex-wrap gap-2">
+                        <h6 class="mb-0 text-lg">Kathryn Murphy</h6>
+                        <span class="text-secondary-light text-md">kathrynmurphy@gmail.com</span>
+                      </div>
+                      <div class="mt-20">
+                        <p class="mb-16 text-primary-light">Hi William</p>
+                        <p class="mb-16 text-primary-light">Just confirming that we transferred $63.86 to you via PayPal
+                          <a href="javascript:void(0)"
+                            class="text-primary-600 text-decoration-underline">(info367@gmail.com)</a> which you earned
+                          on the themewow Market since your last payout.</p>
+                        <p class="mb-0 text-primary-light">Thank you for selling with us!</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="py-16 px-24 border-bottom">
+                  <div class="d-flex align-items-start gap-3">
+                    <img src="assets/images/user-list/user-list2.png" alt="" class="w-40-px h-40-px rounded-pill">
+                    <div class="">
+                      <div class="d-flex align-items-center flex-wrap gap-2">
+                        <h6 class="mb-0 text-lg">Subrata Sen</h6>
+                        <span class="text-secondary-light text-md">subratasen@gmail.com</span>
+                      </div>
+                      <div class="mt-20">
+                        <p class="mb-0 text-primary-light">Awesome, thank you so much!</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer py-16 px-24 bg-base shadow-top">
+                <form action="#">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <textarea class="textarea-max-height form-control p-0 border-0 py-8 pe-16 resize-none scroll-sm"
+                      oninput="adjustHeight(this)" placeholder="Write massage"></textarea>
+                    <div class="d-flex align-items-center gap-4 ms-16">
+                      <div class="">
+                        <label for="attatchment" class="text-secondary-light text-xl">
+                          <iconify-icon icon="octicon:link-16" class="icon line-height-1"></iconify-icon>
+                        </label>
+                        <input type="file" id="attatchment" hidden>
+                      </div>
+                      <div class="">
+                        <label for="gallery" class="text-secondary-light text-xl">
+                          <iconify-icon icon="solar:gallery-bold" class="icon line-height-1"></iconify-icon>
+                        </label>
+                        <input type="file" id="gallery" hidden>
+                      </div>
+                      <button type="submit"
+                        class="btn btn-primary text-sm btn-sm px-12 py-12 w-100 radius-8 d-flex align-items-center justify-content-center gap-1 h-44-px">
+                        <iconify-icon icon="ion:paper-plane-outline" class="icon text-lg line-height-1"></iconify-icon>
+                        Send
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="d-footer">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <p class="mb-0">© 2024 MaxiCare Admin Booking. All Rights Reserved.</p>
+        </div>
+        <div class="col-auto">
+          <p class="mb-0">Made by <span class="text-primary-600">MaxiCare Team</span></p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- jQuery library js -->
+  <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap js -->
+  <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
+  <!-- Apex Chart js -->
+  <script src="assets/js/lib/apexcharts.min.js"></script>
+  <!-- Data Table js -->
+  <script src="assets/js/lib/dataTables.min.js"></script>
+  <!-- Iconify Font js -->
+  <script src="assets/js/lib/iconify-icon.min.js"></script>
+  <!-- jQuery UI js -->
+  <script src="assets/js/lib/jquery-ui.min.js"></script>
+  <!-- Vector Map js -->
+  <script src="assets/js/lib/jquery-jvectormap-2.0.5.min.js"></script>
+  <script src="assets/js/lib/jquery-jvectormap-world-mill-en.js"></script>
+  <!-- Popup js -->
+  <script src="assets/js/lib/magnifc-popup.min.js"></script>
+  <!-- Slick Slider js -->
+  <script src="assets/js/lib/slick.min.js"></script>
+  <!-- prism js -->
+  <script src="assets/js/lib/prism.js"></script>
+  <!-- file upload js -->
+  <script src="assets/js/lib/file-upload.js"></script>
+  <!-- audioplayer -->
+  <script src="assets/js/lib/audioplayer.js"></script>
+
+  <!-- API and Auth services -->
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <!-- main js -->
+  <script src="assets/js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Apply role-based access control
+      applyRoleBasedAccess();
+    });
+
+    function applyRoleBasedAccess() {
+      const currentUser = authService.getCurrentUser();
+      if (!currentUser) {
+        // Redirect to login if no user
+        window.location.href = 'sign-in.html';
+        return;
+      }
+
+      const isAdmin = currentUser.role === 'admin';
+      const isUser = currentUser.role === 'user' || currentUser.role === 'employee';
+
+      // Show/hide admin-only elements
+      const adminElements = document.querySelectorAll('.admin-only');
+      adminElements.forEach(element => {
+        element.style.display = isAdmin ? 'block' : 'none';
+      });
+
+      // Show/hide employee-only elements
+      const employeeElements = document.querySelectorAll('.employee-only');
+      employeeElements.forEach(element => {
+        element.style.display = isUser ? 'block' : 'none';
+      });
+
+      // Update user info in dropdown
+      const userNameElement = document.querySelector('.user-name');
+      const userRoleElement = document.querySelector('.user-role');
+      if (userNameElement) userNameElement.textContent = `${currentUser.firstname} ${currentUser.lastname}`;
+      if (userRoleElement) userRoleElement.textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+    }
+  </script>
+
+  <script>
+    // ========================= Adjust Textarea Height depending of text lines(default height 40px) Js Start ===========================
+    function adjustHeight(textarea) {
+      // Calculate the scroll height of the content
+      let scrollHeight = textarea.scrollHeight;
+
+      // Set the textarea height to the scroll height, but not exceeding the maximum height
+      if (scrollHeight > 44 && scrollHeight <= 60) {
+        textarea.style.height = scrollHeight + 'px';
+      } else if (scrollHeight > 60) {
+        // textarea.style.height = '60px !important';
+        textarea.setAttribute('style', 'height: 60px !important;');
+      }
+    }
+    // ========================= Adjust Textarea Height depending of text lines(default height 40px) Js End ===========================
+  </script>
+
+
+  <script>
+    // Notification functions
+    async function loadNotifications() {
+      try {
+        console.log('Loading notifications...');
+        
+        // Load unread count
+        const countResponse = await maxicareAPI.getUnreadNotificationCount();
+        if (countResponse && countResponse.status) {
+          const countEl = document.getElementById('notificationCount');
+          if (countEl) {
+            countEl.textContent = countResponse.data.count;
+          }
+        }
+
+        // Load recent notifications
+        const notificationsResponse = await maxicareAPI.getNotifications(1, 5);
+        if (notificationsResponse && notificationsResponse.status) {
+          updateNotificationsList(notificationsResponse.data.notifications);
+        } else {
+          showNoNotificationsMessage();
+        }
+      } catch (error) {
+        console.error('Error loading notifications:', error);
+        showNoNotificationsMessage();
+      }
+    }
+
+    function updateNotificationsList(notifications) {
+      const notificationsList = document.getElementById('notificationsList');
+      if (!notificationsList) return;
+
+      if (notifications.length === 0) {
+        showNoNotificationsMessage();
+        return;
+      }
+
+      notificationsList.innerHTML = notifications.map(notification => `
+        <a href="javascript:void(0)" 
+           class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between ${notification.isRead ? '' : 'bg-neutral-50'}"
+           onclick="markNotificationAsRead(${notification.id})">
+          <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
+            <span class="w-44-px h-44-px ${getNotificationIconClass(notification.type)} rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
+              <iconify-icon icon="${getNotificationIcon(notification.type)}" class="icon text-xxl"></iconify-icon>
+            </span>
+            <div>
+              <h6 class="text-md fw-semibold mb-4">${notification.title}</h6>
+              <p class="mb-0 text-sm text-secondary-light text-w-200-px">${notification.message}</p>
+            </div>
+          </div>
+          <span class="text-sm text-secondary-light flex-shrink-0">${formatTimeAgo(notification.createdAt)}</span>
+        </a>
+      `).join('');
+    }
+
+    function showNoNotificationsMessage() {
+      const notificationsList = document.getElementById('notificationsList');
+      if (!notificationsList) return;
+
+      notificationsList.innerHTML = `
+        <div class="text-center py-4">
+          <iconify-icon icon="solar:bell-outline" class="icon text-4xl text-secondary-light mb-2"></iconify-icon>
+          <p class="text-secondary-light mb-0">No notifications</p>
+        </div>
+      `;
+    }
+
+    function getNotificationIcon(type) {
+      const iconMap = {
+        'shift_assigned': 'solar:clock-circle-outline',
+        'shift_completed': 'solar:check-circle-outline',
+        'shift_cancelled': 'solar:close-circle-outline',
+        'user_registered': 'solar:user-plus-outline',
+        'system_announcement': 'solar:megaphone-outline',
+        'shift_reminder': 'solar:alarm-outline',
+        'payment_processed': 'solar:wallet-outline',
+        'profile_updated': 'solar:user-outline',
+        'password_changed': 'solar:lock-outline',
+        'login_attempt': 'solar:login-3-outline'
+      };
+      return iconMap[type] || 'solar:bell-outline';
+    }
+
+    function getNotificationIconClass(type) {
+      const classMap = {
+        'shift_assigned': 'bg-primary-subtle text-primary-main',
+        'shift_completed': 'bg-success-subtle text-success-main',
+        'shift_cancelled': 'bg-danger-subtle text-danger-main',
+        'user_registered': 'bg-info-subtle text-info-main',
+        'system_announcement': 'bg-warning-subtle text-warning-main',
+        'shift_reminder': 'bg-warning-subtle text-warning-main',
+        'payment_processed': 'bg-success-subtle text-success-main',
+        'profile_updated': 'bg-info-subtle text-info-main',
+        'password_changed': 'bg-warning-subtle text-warning-main',
+        'login_attempt': 'bg-info-subtle text-info-main'
+      };
+      return classMap[type] || 'bg-secondary-subtle text-secondary-main';
+    }
+
+    async function markNotificationAsRead(notificationId) {
+      try {
+        await maxicareAPI.markNotificationAsRead(notificationId);
+        // Reload notifications to update the UI
+        await loadNotifications();
+      } catch (error) {
+        console.error('Error marking notification as read:', error);
+      }
+    }
+
+    function formatTimeAgo(dateString) {
+      if (!dateString) return 'N/A';
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+      if (diffInMinutes < 1) return 'Just now';
+      if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+      if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+      return `${Math.floor(diffInMinutes / 1440)}d ago`;
+    }
+
+    // Shift Reports functionality - redirect to view-shifts page
+    function showShiftReports() {
+      window.location.href = 'view-shifts.html';
+    }
+  </script>
+</body>
+
+</html>
