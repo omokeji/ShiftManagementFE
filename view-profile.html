@@ -78,14 +78,11 @@
             <li>
               <a href="add-user.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add User</a>
             </li>
+            <li>
+              <a href="view-profile.html"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> View
+                Profile</a>
+            </li>
           </ul>
-        </li>
-
-        <li class="employee-only">
-          <a href="view-profile.html">
-            <iconify-icon icon="solar:user-linear" class="menu-icon"></iconify-icon>
-            <span>My Profile</span>
-          </a>
         </li>
 
         <li class="dropdown admin-only">
@@ -95,10 +92,12 @@
           </a>
           <ul class="sidebar-submenu">
             <li>
-              <a href="role-access.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Role & Access</a>
+              <a href="role-access.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Role &
+                Access</a>
             </li>
             <li>
-              <a href="assign-role.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Assign Role</a>
+              <a href="assign-role.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Assign
+                Role</a>
             </li>
           </ul>
         </li>
@@ -130,14 +129,26 @@
             <li>
               <a href="view-shifts.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> View Shifts</a>
             </li>
-          <li>
-            <a href="clock-change-requests.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Clock Change Requests</a>
-          </li>
-          <li>
-            <a href="javascript:void(0)" onclick="showShiftReports()"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Shift Reports</a>
-          </li>
-        </ul>
-      </li>
+            <li>
+              <a href="clock-change-requests.html"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Clock Change Requests</a>
+            </li>
+            <li>
+              <a href="javascript:void(0)" onclick="showShiftReports()"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Shift Reports</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown admin-only">
+          <a href="javascript:void(0)">
+            <iconify-icon icon="solar:wallet-outline" class="menu-icon"></iconify-icon>
+            <span>Payout Management</span>
+          </a>
+          <ul class="sidebar-submenu">
+            <li>
+              <a href="payout-management.html"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Manage Payouts</a>
+            </li>
+          </ul>
+        </li>
 
         <li class="employee-only">
           <a href="my-shifts.html">
@@ -150,6 +161,20 @@
           <a href="available-shifts.html">
             <iconify-icon icon="solar:calendar-add-outline" class="menu-icon"></iconify-icon>
             <span>Available Shifts</span>
+          </a>
+        </li>
+
+        <li class="employee-only">
+          <a href="employee-payouts.html">
+            <iconify-icon icon="solar:dollar-minimalistic-outline" class="menu-icon"></iconify-icon>
+            <span>My Payouts</span>
+          </a>
+        </li>
+
+        <li class="employee-only">
+          <a href="view-profile.html">
+            <iconify-icon icon="solar:user-linear" class="menu-icon"></iconify-icon>
+            <span>My Profile</span>
           </a>
         </li>
       </ul>
@@ -277,7 +302,7 @@
       <div class="row gy-4">
         <div class="col-lg-4">
           <div class="user-grid-card position-relative border radius-16 overflow-hidden bg-base h-100">
-            <img src="assets/images/user-grid/user-grid-bg1.png" alt="" class="w-100 object-fit-cover">
+            <img src="assets/images/auth/auth-img.png" alt="" class="w-100 object-fit-cover">
             <div class="pb-24 ms-16 mb-24 me-16  mt--100">
               <div class="text-center border border-top-0 border-start-0 border-end-0">
                 <img src="assets/images/user-grid/user-grid-img14.png" alt=""
@@ -358,6 +383,13 @@
                     Notification Settings
                   </button>
                 </li>
+                <li class="nav-item employee-only" role="presentation">
+                  <button class="nav-link d-flex align-items-center px-24" id="pills-bank-details-tab"
+                    data-bs-toggle="pill" data-bs-target="#pills-bank-details" type="button" role="tab"
+                    aria-controls="pills-bank-details" aria-selected="false" tabindex="-1">
+                    Bank Details
+                  </button>
+                </li>
               </ul>
 
               <div class="tab-content" id="pills-tabContent">
@@ -402,29 +434,43 @@
                         <div class="mb-20">
                           <label for="number"
                             class="form-label fw-semibold text-primary-light text-sm mb-8">Phone</label>
-                          <input type="email" class="form-control radius-8" id="number"
+                          <input type="tel" class="form-control radius-8" id="number"
                             placeholder="Enter phone number">
                         </div>
                       </div>
                       <div class="col-sm-6">
                         <div class="mb-20">
-                          <label for="depart" class="form-label fw-semibold text-primary-light text-sm mb-8">Department
+                          <label for="depart" class="form-label fw-semibold text-primary-light text-sm mb-8">Department/Team
                             <span class="text-danger-600">*</span> </label>
                           <select class="form-control radius-8 form-select" id="depart">
-                            <option>Enter Event Title </option>
-                            <option>Enter Event Title One </option>
-                            <option>Enter Event Title Two</option>
+                            <option value="">Select Department</option>
+                            <option value="RN">RN - Registered Nurse</option>
+                            <option value="LPN">LPN - Licensed Practical Nurse</option>
+                            <option value="CNA">CNA - Certified Nursing Assistant</option>
+                            <option value="HHA">HHA - Home Health Aide</option>
+                            <option value="PCA">PCA - Personal Care Assistant</option>
+                            <option value="Administrative">Administrative</option>
+                            <option value="Management">Management</option>
+                            <option value="Other">Other</option>
                           </select>
                         </div>
                       </div>
                       <div class="col-sm-6">
                         <div class="mb-20">
-                          <label for="desig" class="form-label fw-semibold text-primary-light text-sm mb-8">Designation
+                          <label for="desig" class="form-label fw-semibold text-primary-light text-sm mb-8">Designation/Title
                             <span class="text-danger-600">*</span> </label>
                           <select class="form-control radius-8 form-select" id="desig">
-                            <option>Enter Designation Title </option>
-                            <option>Enter Designation Title One </option>
-                            <option>Enter Designation Title Two</option>
+                            <option value="">Select Designation</option>
+                            <option value="Staff Nurse">Staff Nurse</option>
+                            <option value="Senior Nurse">Senior Nurse</option>
+                            <option value="Charge Nurse">Charge Nurse</option>
+                            <option value="Nurse Supervisor">Nurse Supervisor</option>
+                            <option value="Healthcare Assistant">Healthcare Assistant</option>
+                            <option value="Care Coordinator">Care Coordinator</option>
+                            <option value="Clinical Manager">Clinical Manager</option>
+                            <option value="Administrator" class="admin-only-option">Administrator</option>
+                            <option value="Director" class="admin-only-option">Director</option>
+                            <option value="Other">Other</option>
                           </select>
                         </div>
                       </div>
@@ -451,12 +497,13 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-center gap-3">
                       <button type="button"
-                        class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8">
+                        class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"
+                        onclick="loadUserProfile()">
                         Cancel
                       </button>
-                      <button type="button"
+                      <button type="submit"
                         class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
-                        Save
+                        Save Changes
                       </button>
                     </div>
                   </form>
@@ -553,6 +600,88 @@
                   </div>
                 </div>
 
+                <div class="tab-pane fade employee-only" id="pills-bank-details" role="tabpanel"
+                  aria-labelledby="pills-bank-details-tab" tabindex="0">
+                  <h6 class="text-md text-primary-light mb-16">Bank Account Information</h6>
+                  <p class="text-secondary-light text-sm mb-24">
+                    <iconify-icon icon="solar:shield-check-outline" class="text-success me-2"></iconify-icon>
+                    Your bank details are securely stored and encrypted. This information is required for payout processing.
+                  </p>
+                  
+                  <!-- Bank Details Status -->
+                  <div id="bankDetailsStatus" class="alert alert-info mb-24" style="display: none;">
+                    <iconify-icon icon="solar:info-circle-outline" class="me-2"></iconify-icon>
+                    <span id="bankDetailsStatusText"></span>
+                  </div>
+
+                  <form id="bankDetailsForm" action="#">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="mb-20">
+                          <label for="bankAccountHolderName" class="form-label fw-semibold text-primary-light text-sm mb-8">
+                            Account Holder Name <span class="text-danger-600">*</span>
+                          </label>
+                          <input type="text" class="form-control radius-8" id="bankAccountHolderName" 
+                            placeholder="Enter full legal name as it appears on your bank account" required>
+                          <small class="text-secondary-light">Must match your legal name</small>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="mb-20">
+                          <label for="bankAccountNumber" class="form-label fw-semibold text-primary-light text-sm mb-8">
+                            Account Number <span class="text-danger-600">*</span>
+                          </label>
+                          <input type="text" class="form-control radius-8" id="bankAccountNumber" 
+                            placeholder="Enter bank account number" required>
+                          <small class="text-secondary-light">Your checking or savings account number</small>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="mb-20">
+                          <label for="bankRoutingNumber" class="form-label fw-semibold text-primary-light text-sm mb-8">
+                            Routing Number <span class="text-danger-600">*</span>
+                          </label>
+                          <input type="text" class="form-control radius-8" id="bankRoutingNumber" 
+                            placeholder="Enter 9-digit routing number" maxlength="9" required>
+                          <small class="text-secondary-light">9-digit ABA routing number</small>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="mb-20">
+                          <label for="bankName" class="form-label fw-semibold text-primary-light text-sm mb-8">
+                            Bank Name
+                          </label>
+                          <input type="text" class="form-control radius-8" id="bankName" 
+                            placeholder="Enter bank name (optional)">
+                          <small class="text-secondary-light">e.g., Chase Bank, Bank of America</small>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="mb-20">
+                          <label for="bankAccountType" class="form-label fw-semibold text-primary-light text-sm mb-8">
+                            Account Type <span class="text-danger-600">*</span>
+                          </label>
+                          <select class="form-control radius-8" id="bankAccountType" required>
+                            <option value="checking">Checking</option>
+                            <option value="savings">Savings</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center justify-content-center gap-3">
+                      <button type="button" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-56 py-11 radius-8"
+                        onclick="resetBankDetailsForm()">
+                        Cancel
+                      </button>
+                      <button type="submit" class="btn btn-primary border border-primary-600 text-md px-56 py-12 radius-8">
+                        <iconify-icon icon="solar:shield-check-outline" class="icon me-2"></iconify-icon>
+                        Save Bank Details
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
               </div>
             </div>
           </div>
@@ -602,6 +731,7 @@
   <script src="assets/js/api.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/router.js"></script>
+  <script src="assets/js/profile-picture.js"></script>
   <!-- main js -->
   <script src="assets/js/app.js"></script>
 
@@ -619,8 +749,18 @@
         return;
       }
 
-      const isAdmin = currentUser.role === 'admin';
+      const isAdmin = currentUser.role === 'admin' || currentUser.role === 'administrator';
       const isUser = currentUser.role === 'user' || currentUser.role === 'employee';
+
+      // Update dashboard link based on role
+      const dashboardLinks = document.querySelectorAll('a[href="index.html"]');
+      dashboardLinks.forEach(link => {
+        if (isUser) {
+          link.href = 'employee-dashboard.html';
+        } else {
+          link.href = 'index.html';
+        }
+      });
 
       // Show/hide admin-only elements
       const adminElements = document.querySelectorAll('.admin-only');
@@ -632,6 +772,15 @@
       const employeeElements = document.querySelectorAll('.employee-only');
       employeeElements.forEach(element => {
         element.style.display = isUser ? 'block' : 'none';
+      });
+
+      // Hide admin-only designation options from employees
+      const adminOnlyOptions = document.querySelectorAll('.admin-only-option');
+      adminOnlyOptions.forEach(option => {
+        if (!isAdmin) {
+          option.style.display = 'none';
+          option.disabled = true;
+        }
       });
 
       // Update user info in dropdown
@@ -674,6 +823,12 @@
       // Form submission handlers
       document.querySelector('#pills-edit-profile form').addEventListener('submit', handleProfileUpdate);
       document.getElementById('changePasswordForm').addEventListener('submit', handlePasswordChange);
+      document.getElementById('bankDetailsForm').addEventListener('submit', handleBankDetailsUpdate);
+      
+      // Load bank details if user is an employee
+      if (currentUser.role === 'user') {
+        await loadBankDetails();
+      }
     });
 
     async function loadUserProfile() {
@@ -693,6 +848,27 @@
       // Update profile card
       document.querySelector('.user-grid-card h6').textContent = `${user.firstname} ${user.lastname}`;
       document.querySelector('.user-grid-card span').textContent = user.email;
+      
+      // Update profile pictures
+      const defaultImage = 'assets/images/user.png';
+      const profileImage = user.profilePicture || defaultImage;
+      
+      // Update profile card image
+      const profileCardImg = document.querySelector('.user-grid-card img.rounded-circle');
+      if (profileCardImg) {
+        profileCardImg.src = profileImage;
+      }
+      
+      // Update navbar image
+      const navbarImg = document.querySelector('.dropdown button img');
+      if (navbarImg) {
+        navbarImg.src = profileImage;
+      }
+      
+      // Update image preview in edit section
+      if (user.profilePicture) {
+        $('#imagePreview').css('background-image', 'url(' + user.profilePicture + ')');
+      }
       
       // Update personal info
       const personalInfoItems = document.querySelectorAll('.user-grid-card ul li');
@@ -714,9 +890,148 @@
       document.getElementById('name').value = `${user.firstname} ${user.lastname}`;
       document.getElementById('email').value = user.email;
       document.getElementById('number').value = user.phone || '';
-      document.getElementById('depart').value = user.team || '';
-      document.getElementById('desig').value = user.title || '';
+      
+      // Set department dropdown value
+      const departSelect = document.getElementById('depart');
+      if (user.team) {
+        // Check if the value exists in the dropdown options
+        const teamExists = Array.from(departSelect.options).some(option => option.value === user.team);
+        if (!teamExists && user.team !== '') {
+          // Add custom option if it doesn't exist
+          const customOption = new Option(user.team, user.team);
+          departSelect.add(customOption);
+        }
+        departSelect.value = user.team;
+      }
+      
+      // Set designation dropdown value
+      const desigSelect = document.getElementById('desig');
+      if (user.title) {
+        // Check if the value exists in the dropdown options
+        const titleExists = Array.from(desigSelect.options).some(option => option.value === user.title);
+        if (!titleExists && user.title !== '') {
+          // Add custom option if it doesn't exist
+          const customOption = new Option(user.title, user.title);
+          // If employee has admin designation, make it visible but they can't change back to it
+          const isAdmin = currentUser.role === 'admin' || currentUser.role === 'administrator';
+          const adminOnlyDesignations = ['Administrator', 'Director'];
+          if (!isAdmin && adminOnlyDesignations.includes(user.title)) {
+            customOption.classList.add('admin-only-option');
+          }
+          desigSelect.add(customOption);
+        }
+        desigSelect.value = user.title;
+      }
+      
       document.getElementById('desc').value = user.title || '';
+      
+      // Populate bank details if available
+      if (user.bankAccountHolderName) {
+        populateBankDetails(user);
+      }
+      
+      // Re-apply role-based access to hide admin-only options
+      const isAdmin = currentUser.role === 'admin' || currentUser.role === 'administrator';
+      const adminOnlyOptions = document.querySelectorAll('.admin-only-option');
+      adminOnlyOptions.forEach(option => {
+        if (!isAdmin) {
+          option.style.display = 'none';
+          option.disabled = true;
+        }
+      });
+    }
+
+    function populateBankDetails(user) {
+      document.getElementById('bankAccountHolderName').value = user.bankAccountHolderName || '';
+      document.getElementById('bankAccountNumber').value = user.bankAccountNumber || '';
+      document.getElementById('bankRoutingNumber').value = user.bankRoutingNumber || '';
+      document.getElementById('bankName').value = user.bankName || '';
+      document.getElementById('bankAccountType').value = user.bankAccountType || 'checking';
+      
+      // Show status message if Stripe recipient ID exists
+      if (user.stripeRecipientId) {
+        const statusDiv = document.getElementById('bankDetailsStatus');
+        const statusText = document.getElementById('bankDetailsStatusText');
+        statusDiv.className = 'alert alert-success mb-24';
+        statusText.textContent = 'Bank account verified and connected for payouts';
+        statusDiv.style.display = 'block';
+      }
+    }
+
+    async function loadBankDetails() {
+      try {
+        const response = await maxicareAPI.getUser(currentUser.id);
+        if (response.status && response.data) {
+          if (response.data.bankAccountHolderName) {
+            populateBankDetails(response.data);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading bank details:', error);
+      }
+    }
+
+    async function handleBankDetailsUpdate(e) {
+      e.preventDefault();
+      
+      const accountNumber = document.getElementById('bankAccountNumber').value;
+      const routingNumber = document.getElementById('bankRoutingNumber').value;
+      
+      // Validate routing number
+      if (routingNumber.length !== 9 || !/^\d+$/.test(routingNumber)) {
+        showAlert('Routing number must be exactly 9 digits', 'warning');
+        return;
+      }
+      
+      // Validate account number
+      if (accountNumber.length < 4 || !/^\d+$/.test(accountNumber)) {
+        showAlert('Please enter a valid account number', 'warning');
+        return;
+      }
+      
+      try {
+        const bankDetailsData = {
+          bankAccountHolderName: document.getElementById('bankAccountHolderName').value,
+          bankAccountNumber: accountNumber,
+          bankRoutingNumber: routingNumber,
+          bankName: document.getElementById('bankName').value,
+          bankAccountType: document.getElementById('bankAccountType').value
+        };
+
+        console.log('Updating bank details for user:', currentUser.id);
+        const response = await maxicareAPI.updateBankDetails(currentUser.id, bankDetailsData);
+        
+        if (response.status) {
+          showAlert('Bank details updated successfully! Your account has been verified for payouts.', 'success');
+          
+          // Update status display
+          const statusDiv = document.getElementById('bankDetailsStatus');
+          const statusText = document.getElementById('bankDetailsStatusText');
+          statusDiv.className = 'alert alert-success mb-24';
+          
+          // Check if this is staging or production
+          const stripeId = response.data.stripeRecipientId || '';
+          if (stripeId.includes('staging')) {
+            statusText.textContent = 'Bank account details saved (STAGING MODE - Stripe ID simulated)';
+          } else {
+            statusText.textContent = 'Bank account verified and connected for payouts';
+          }
+          statusDiv.style.display = 'block';
+          
+          // Reload user profile to get updated data
+          await loadUserProfile();
+        } else {
+          showAlert('Error updating bank details: ' + response.message, 'danger');
+        }
+      } catch (error) {
+        console.error('Error updating bank details:', error);
+        showAlert('Error updating bank details: ' + (error.message || 'Please try again'), 'danger');
+      }
+    }
+
+    function resetBankDetailsForm() {
+      document.getElementById('bankDetailsForm').reset();
+      loadBankDetails(); // Reload saved data
     }
 
     function updateEmailVerificationStatus(isConfirmed) {
@@ -768,26 +1083,75 @@
     async function handleProfileUpdate(e) {
       e.preventDefault();
       
+      const fullName = document.getElementById('name').value.trim();
+      const team = document.getElementById('depart').value;
+      const title = document.getElementById('desig').value;
+      
+      // Validation
+      if (!fullName) {
+        showAlert('Please enter your full name', 'warning');
+        return;
+      }
+      
+      if (!team) {
+        showAlert('Please select a department/team', 'warning');
+        return;
+      }
+      
+      if (!title) {
+        showAlert('Please select a designation/title', 'warning');
+        return;
+      }
+      
+      // Prevent employees from selecting admin-only designations
+      const isAdmin = currentUser.role === 'admin' || currentUser.role === 'administrator';
+      const adminOnlyDesignations = ['Administrator', 'Director'];
+      
+      if (!isAdmin && adminOnlyDesignations.includes(title)) {
+        showAlert('You cannot assign yourself an administrator or director designation', 'danger');
+        return;
+      }
+      
       try {
+        const nameParts = fullName.split(' ');
+        const firstname = nameParts[0];
+        const lastname = nameParts.slice(1).join(' ') || firstname; // Use firstname as lastname if only one name provided
+        
         const formData = {
-          firstname: document.getElementById('name').value.split(' ')[0],
-          lastname: document.getElementById('name').value.split(' ').slice(1).join(' '),
+          firstname: firstname,
+          lastname: lastname,
           email: document.getElementById('email').value,
           phone: document.getElementById('number').value,
-          team: document.getElementById('depart').value,
-          title: document.getElementById('desig').value
+          team: team,
+          title: title
         };
 
+        console.log('Updating profile with data:', formData);
+        
         const response = await maxicareAPI.updateUser(currentUser.id, formData);
         if (response.status) {
-          showAlert('Profile updated successfully', 'success');
-          await loadUserProfile(); // Reload profile data
+          showAlert('Profile updated successfully!', 'success');
+          
+          // Update current user in localStorage/sessionStorage
+          const updatedUser = { ...currentUser, ...response.data };
+          
+          // Update in the same storage that auth service uses
+          if (localStorage.getItem('maxicare_user')) {
+            localStorage.setItem('maxicare_user', JSON.stringify(updatedUser));
+          } else {
+            sessionStorage.setItem('maxicare_user', JSON.stringify(updatedUser));
+          }
+          
+          currentUser = updatedUser;
+          
+          // Reload profile data to reflect changes
+          await loadUserProfile();
         } else {
           showAlert('Error updating profile: ' + response.message, 'danger');
         }
       } catch (error) {
         console.error('Error updating profile:', error);
-        showAlert('Error updating profile', 'danger');
+        showAlert('Error updating profile: ' + (error.message || 'Please try again'), 'danger');
       }
     }
 
@@ -870,17 +1234,112 @@
     }
 
     // ======================== Upload Image Start =====================
+    let uploadedProfilePicture = null;
+    
     function readURL(input) {
       if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
-          $('#imagePreview').hide();
-          $('#imagePreview').fadeIn(650);
+        const file = input.files[0];
+        
+        console.log('File selected:', file.name, 'Size:', (file.size / 1024).toFixed(2), 'KB');
+        
+        // Validate file type
+        if (!file.type.match('image.*')) {
+          showAlert('Please select a valid image file (JPG, PNG, GIF)', 'warning');
+          return;
         }
-        reader.readAsDataURL(input.files[0]);
+        
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          showAlert('Image size should be less than 5MB. Please compress your image or choose a smaller one.', 'warning');
+          return;
+        }
+        
+        var reader = new FileReader();
+        
+        reader.onerror = function(error) {
+          console.error('FileReader error:', error);
+          showAlert('Error reading file. Please try again.', 'danger');
+        };
+        
+        reader.onload = function (e) {
+          try {
+            const base64Image = e.target.result;
+            uploadedProfilePicture = base64Image;
+            
+            console.log('Image loaded, base64 length:', base64Image.length);
+            
+            // Update preview
+            $('#imagePreview').css('background-image', 'url(' + base64Image + ')');
+            $('#imagePreview').hide();
+            $('#imagePreview').fadeIn(650);
+            
+            // Auto-save profile picture
+            saveProfilePicture(base64Image);
+          } catch (error) {
+            console.error('Error processing image:', error);
+            showAlert('Error processing image. Please try again.', 'danger');
+          }
+        }
+        
+        reader.readAsDataURL(file);
       }
     }
+    
+    async function saveProfilePicture(base64Image) {
+      try {
+        console.log('Saving profile picture...');
+        console.log('Image size:', (base64Image.length / 1024).toFixed(2), 'KB');
+        
+        const response = await maxicareAPI.updateUser(currentUser.id, {
+          profilePicture: base64Image
+        });
+        
+        console.log('Update response:', response);
+        
+        if (response.status) {
+          showAlert('Profile picture updated successfully!', 'success');
+          
+          // Update in localStorage/sessionStorage
+          const updatedUser = { ...currentUser, profilePicture: base64Image };
+          
+          // Update in the same storage that auth service uses
+          if (localStorage.getItem('maxicare_user')) {
+            localStorage.setItem('maxicare_user', JSON.stringify(updatedUser));
+          } else {
+            sessionStorage.setItem('maxicare_user', JSON.stringify(updatedUser));
+          }
+          
+          currentUser = updatedUser;
+          
+          // Update all profile images on the page
+          updateAllProfileImages(base64Image);
+        } else {
+          console.error('Update failed:', response);
+          showAlert('Error updating profile picture: ' + (response.message || 'Unknown error'), 'danger');
+        }
+      } catch (error) {
+        console.error('Error saving profile picture:', error);
+        showAlert('Error saving profile picture: ' + (error.message || 'Please try again'), 'danger');
+      }
+    }
+    
+    function updateAllProfileImages(imageUrl) {
+      // Update navbar profile image
+      const navbarImg = document.querySelector('.dropdown button img');
+      if (navbarImg) {
+        navbarImg.src = imageUrl;
+      }
+      
+      // Update profile card image
+      const profileCardImg = document.querySelector('.user-grid-card img.rounded-circle');
+      if (profileCardImg) {
+        profileCardImg.src = imageUrl;
+      }
+      
+      // Update preview
+      $('#imagePreview').css('background-image', 'url(' + imageUrl + ')');
+    }
+    
     $("#imageUpload").change(function () {
       readURL(this);
     });

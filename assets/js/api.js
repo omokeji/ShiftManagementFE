@@ -254,10 +254,18 @@ class MaxiCareAPI {
     }
 
     async updateUser(id, userData) {
-        this.checkRoleAccess('admin');
+        // Both admins and users can update profiles (users can update their own)
         return await this.request(`/users/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             body: JSON.stringify(userData),
+        });
+    }
+
+    async updateBankDetails(userId, bankDetailsData) {
+        // Users can update their own bank details, admins can update anyone's
+        return await this.request(`/users/${userId}/bank-details`, {
+            method: 'PUT',
+            body: JSON.stringify(bankDetailsData)
         });
     }
 
@@ -369,12 +377,22 @@ class MaxiCareAPI {
 
     // Notification methods
     async getNotifications(page = 1, limit = 10, filters = {}) {
-        const queryParams = new URLSearchParams({
-            page: page.toString(),
-            limit: limit.toString(),
-            ...filters
+        // Build query string manually to ensure proper parameter formatting
+        const queryParts = [];
+        
+        // Add pagination parameters
+        queryParts.push(`page=${parseInt(page)}`);
+        queryParts.push(`limit=${parseInt(limit)}`);
+        
+        // Add additional filters
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== undefined && filters[key] !== null) {
+                queryParts.push(`${key}=${encodeURIComponent(filters[key])}`);
+            }
         });
-        return await this.request(`/notifications?${queryParams}`);
+        
+        const endpoint = `/notifications?${queryParts.join('&')}`;
+        return await this.request(endpoint);
     }
 
     async getUnreadNotificationCount() {
@@ -401,12 +419,22 @@ class MaxiCareAPI {
 
     // Clock-in records methods
     async getClockInRecords(page = 1, limit = 10, filters = {}) {
-        const queryParams = new URLSearchParams({
-            page: page.toString(),
-            limit: limit.toString(),
-            ...filters
+        // Build query string manually to ensure proper parameter formatting
+        const queryParts = [];
+        
+        // Add pagination parameters
+        queryParts.push(`page=${parseInt(page)}`);
+        queryParts.push(`limit=${parseInt(limit)}`);
+        
+        // Add additional filters
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== undefined && filters[key] !== null) {
+                queryParts.push(`${key}=${encodeURIComponent(filters[key])}`);
+            }
         });
-        return await this.request(`/clockin-records?${queryParams}`);
+        
+        const endpoint = `/clockin-records?${queryParts.join('&')}`;
+        return await this.request(endpoint);
     }
 
     async getActiveClockInRecords() {
@@ -418,19 +446,13 @@ class MaxiCareAPI {
     }
 
     async getUserClockInRecords(userId, page = 1, limit = 10) {
-        const queryParams = new URLSearchParams({
-            page: page.toString(),
-            limit: limit.toString()
-        });
-        return await this.request(`/clockin-records/user/${userId}?${queryParams}`);
+        const endpoint = `/clockin-records/user/${userId}?page=${parseInt(page)}&limit=${parseInt(limit)}`;
+        return await this.request(endpoint);
     }
 
     async getShiftClockInRecords(shiftId, page = 1, limit = 10) {
-        const queryParams = new URLSearchParams({
-            page: page.toString(),
-            limit: limit.toString()
-        });
-        return await this.request(`/clockin-records/shift/${shiftId}?${queryParams}`);
+        const endpoint = `/clockin-records/shift/${shiftId}?page=${parseInt(page)}&limit=${parseInt(limit)}`;
+        return await this.request(endpoint);
     }
 
     async getTotalHoursWorked(userId, startDate, endDate) {
@@ -549,6 +571,244 @@ class MaxiCareAPI {
     async getRecentActivities(limit = 10) {
         this.checkRoleAccess('admin');
         return await this.request(`/analytics/recent-activities?limit=${limit}`);
+    }
+
+    // Get Google Maps API key securely from server
+    async getGoogleMapsApiKey() {
+        return await this.request('/config/google-maps-api-key');
+    }
+
+    // ==================== PAYOUT METHODS ====================
+
+    // Create a new payout for a completed shift
+    async createPayout(userId, shiftId, isEarlyPayout = false) {
+        this.checkRoleAccess('admin');
+        return await this.request('/payouts', {
+            method: 'POST',
+            body: JSON.stringify({
+                userId: parseInt(userId),
+                shiftId: parseInt(shiftId),
+                isEarlyPayout: isEarlyPayout
+            })
+        });
+    }
+
+    async requestPayout(shiftId, isEarlyPayout = false) {
+        // Employees can request payouts for themselves
+        return await this.request('/payouts/request', {
+            method: 'POST',
+            body: JSON.stringify({
+                shiftId: parseInt(shiftId),
+                isEarlyPayout: isEarlyPayout
+            })
+        });
+    }
+
+    async approveClockInForPayout(clockInRecordId) {
+        this.checkRoleAccess('admin');
+        return await this.request(`/payouts/approve-clockin/${clockInRecordId}`, {
+            method: 'PATCH'
+        });
+    }
+
+    // Process a pending payout
+    async processPayout(payoutId, stripeAccountId = null) {
+        this.checkRoleAccess('admin');
+        return await this.request('/payouts/process', {
+            method: 'POST',
+            body: JSON.stringify({
+                payoutId: parseInt(payoutId),
+                stripeAccountId: stripeAccountId
+            })
+        });
+    }
+
+    async retryPayout(payoutId) {
+        this.checkRoleAccess('admin');
+        return await this.request(`/payouts/${payoutId}/retry`, {
+            method: 'POST'
+        });
+    }
+
+    // Get all payouts with optional filtering
+    async getPayouts(filters = {}) {
+        this.checkRoleAccess('admin');
+        
+        // Build query string manually to ensure proper parameter formatting
+        const queryParts = [];
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== undefined && filters[key] !== null) {
+                // Ensure numeric parameters are properly formatted
+                if (key === 'page' || key === 'limit') {
+                    queryParts.push(`${key}=${parseInt(filters[key])}`);
+                } else {
+                    queryParts.push(`${key}=${encodeURIComponent(filters[key])}`);
+                }
+            }
+        });
+
+        const endpoint = queryParts.length > 0 ? `/payouts?${queryParts.join('&')}` : '/payouts';
+        return await this.request(endpoint);
+    }
+
+    // Get payout summary statistics
+    async getPayoutSummary(filters = {}) {
+        this.checkRoleAccess('admin');
+        const queryParams = new URLSearchParams();
+        
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== undefined && filters[key] !== null) {
+                queryParams.append(key, filters[key]);
+            }
+        });
+
+        const endpoint = queryParams.toString() ? `/payouts/summary?${queryParams}` : '/payouts/summary';
+        return await this.request(endpoint);
+    }
+
+
+    // Get payouts for a specific user
+    async getUserPayouts(userId, filters = {}) {
+        const queryParams = new URLSearchParams();
+        
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== undefined && filters[key] !== null) {
+                queryParams.append(key, filters[key]);
+            }
+        });
+
+        const endpoint = queryParams.toString() ? `/payouts/user/${userId}?${queryParams}` : `/payouts/user/${userId}`;
+        return await this.request(endpoint);
+    }
+
+    // Get current user's payouts
+    async getMyPayouts(filters = {}) {
+        const queryParams = new URLSearchParams();
+        
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== undefined && filters[key] !== null) {
+                queryParams.append(key, filters[key]);
+            }
+        });
+
+        const endpoint = queryParams.toString() ? `/payouts/my-payouts?${queryParams}` : '/payouts/my-payouts';
+        return await this.request(endpoint);
+    }
+
+    // Get current user's payout summary
+    async getMyPayoutSummary() {
+        return await this.request('/payouts/my-summary');
+    }
+
+    // Get payout by ID
+    async getPayoutById(payoutId) {
+        return await this.request(`/payouts/${payoutId}`);
+    }
+
+    // ==================== PAYOUT REQUEST METHODS ====================
+
+    // Create a new payout request (for employees)
+    async createPayoutRequest(shiftId, isEarlyPayout = false, requestReason = '') {
+        this.checkRoleAccess('user');
+        return await this.request('/payout-requests', {
+            method: 'POST',
+            body: JSON.stringify({
+                shiftId: shiftId,
+                isEarlyPayout: isEarlyPayout,
+                requestReason: requestReason
+            })
+        });
+    }
+
+    // Get all payout requests (admin only)
+    async getPayoutRequests(filters = {}) {
+        this.checkRoleAccess('admin');
+        
+        // Build query string manually to ensure proper parameter formatting
+        const queryParts = [];
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== undefined && filters[key] !== null) {
+                // Ensure numeric parameters are properly formatted
+                if (key === 'page' || key === 'limit') {
+                    queryParts.push(`${key}=${parseInt(filters[key])}`);
+                } else {
+                    queryParts.push(`${key}=${encodeURIComponent(filters[key])}`);
+                }
+            }
+        });
+
+        const endpoint = queryParts.length > 0 ? `/payout-requests?${queryParts.join('&')}` : '/payout-requests';
+        return await this.request(endpoint);
+    }
+
+    // Get current user's payout requests
+    async getMyPayoutRequests(filters = {}) {
+        // Build query string manually to ensure proper parameter formatting
+        const queryParts = [];
+        Object.keys(filters).forEach(key => {
+            if (filters[key] !== undefined && filters[key] !== null) {
+                // Ensure numeric parameters are properly formatted
+                if (key === 'page' || key === 'limit') {
+                    queryParts.push(`${key}=${parseInt(filters[key])}`);
+                } else {
+                    queryParts.push(`${key}=${encodeURIComponent(filters[key])}`);
+                }
+            }
+        });
+
+        const endpoint = queryParts.length > 0 ? `/payout-requests/my-requests?${queryParts.join('&')}` : '/payout-requests/my-requests';
+        return await this.request(endpoint);
+    }
+
+    // Get payout request by ID
+    async getPayoutRequestById(requestId) {
+        return await this.request(`/payout-requests/${requestId}`);
+    }
+
+    // Update payout request (approve/reject - admin only)
+    async updatePayoutRequest(requestId, status, rejectionReason = null) {
+        this.checkRoleAccess('admin');
+        return await this.request(`/payout-requests/${requestId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                status: status,
+                rejectionReason: rejectionReason
+            })
+        });
+    }
+
+    // Get payout request summary
+    async getPayoutRequestSummary() {
+        return await this.request('/payout-requests/summary');
+    }
+
+    // ==================== COMPLETED SHIFTS METHODS ====================
+
+    // Get completed shifts ready for payout
+    // userId: optional - if provided, returns only that user's completed shifts
+    // if not provided (admin), returns all completed shifts
+    async getCompletedShiftsForPayout(userId = null) {
+        if (userId) {
+            // Employee viewing their own completed shifts
+            return await this.request(`/payouts/completed-shifts?userId=${userId}`);
+        } else {
+            // Admin viewing all completed shifts
+            this.checkRoleAccess('admin');
+            return await this.request('/payouts/completed-shifts');
+        }
+    }
+
+    // Process weekly payouts for all completed shifts
+    async processWeeklyPayouts() {
+        this.checkRoleAccess('admin');
+        return await this.request('/payouts/process-weekly', {
+            method: 'POST'
+        });
+    }
+
+    // Get shift details with clock-in records
+    async getShiftWithClockInRecords(shiftId) {
+        return await this.request(`/shifts/${shiftId}/clock-in-records`);
     }
 }
 

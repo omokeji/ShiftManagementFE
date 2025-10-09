@@ -1,0 +1,1198 @@
+<!-- meta tags and other links -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Payouts - MaxiCare</title>
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" sizes="16x16">
+  <!-- remix icon font css  -->
+  <link rel="stylesheet" href="assets/css/remixicon.css">
+  <!-- BootStrap css -->
+  <link rel="stylesheet" href="assets/css/lib/bootstrap.min.css">
+  <!-- Apex Chart css -->
+  <link rel="stylesheet" href="assets/css/lib/apexcharts.css">
+  <!-- Data Table css -->
+  <link rel="stylesheet" href="assets/css/lib/dataTables.min.css">
+  <!-- Text Editor css -->
+  <link rel="stylesheet" href="assets/css/lib/editor-katex.min.css">
+  <link rel="stylesheet" href="assets/css/lib/editor.atom-one-dark.min.css">
+  <link rel="stylesheet" href="assets/css/lib/editor.quill.snow.css">
+  <!-- Date picker css -->
+  <link rel="stylesheet" href="assets/css/lib/flatpickr.min.css">
+  <!-- Calendar css -->
+  <link rel="stylesheet" href="assets/css/lib/full-calendar.css">
+  <!-- Vector Map css -->
+  <link rel="stylesheet" href="assets/css/lib/jquery-jvectormap-2.0.5.css">
+  <!-- Popup css -->
+  <link rel="stylesheet" href="assets/css/lib/magnific-popup.css">
+  <!-- Slick Slider css -->
+  <link rel="stylesheet" href="assets/css/lib/slick.css">
+  <!-- prism css -->
+  <link rel="stylesheet" href="assets/css/lib/prism.css">
+  <!-- file upload css -->
+  <link rel="stylesheet" href="assets/css/lib/file-upload.css">
+  <link rel="stylesheet" href="assets/css/lib/audioplayer.css">
+  <!-- main css -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- shift management css -->
+  <link rel="stylesheet" href="assets/css/shift-management.css">
+    <style>
+        .payout-card {
+            border-left: 4px solid #007bff;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        .payout-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+        }
+        .status-pending { background-color: #ffc107; color: #000; }
+        .status-processing { background-color: #17a2b8; color: #fff; }
+        .status-completed { background-color: #28a745; color: #fff; }
+        .status-failed { background-color: #dc3545; color: #fff; }
+        .type-early { border-left-color: #fd7e14; }
+        .type-regular { border-left-color: #007bff; }
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 1rem;
+        }
+        .summary-card .card-body {
+            padding: 1.5rem;
+        }
+        .earnings-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .hours-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        .payouts-card {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+        /* Notification Badge Styles */
+        #notificationBadge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <button type="button" class="sidebar-close-btn">
+      <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
+    </button>
+    <div>
+      <a href="employee-dashboard.html" class="sidebar-logo">
+        <img src="assets/images/logo.png" alt="site logo" class="light-logo">
+        <img src="assets/images/logo-light.png" alt="site logo" class="dark-logo">
+        <img src="assets/images/logo-icon.png" alt="site logo" class="logo-icon">
+      </a>
+    </div>
+    <div class="sidebar-menu-area">
+      <ul class="sidebar-menu" id="sidebar-menu">
+        <li>
+          <a href="employee-dashboard.html">
+            <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0)" class="disabled-link" style="opacity: 0.5; cursor: not-allowed;">
+            <iconify-icon icon="solar:calendar-outline" class="menu-icon"></iconify-icon>
+            <span>Calendar (Disabled)</span>
+          </a>
+        </li>
+        <li>
+          <a href="my-shifts.html">
+            <iconify-icon icon="solar:clock-circle-outline" class="menu-icon"></iconify-icon>
+            <span>My Shifts</span>
+                            </a>
+                        </li>
+        <li>
+          <a href="available-shifts.html">
+            <iconify-icon icon="solar:calendar-add-outline" class="menu-icon"></iconify-icon>
+            <span>Available Shifts</span>
+                            </a>
+                        </li>
+        <li>
+          <a href="employee-payouts.html">
+            <iconify-icon icon="solar:dollar-minimalistic-outline" class="menu-icon"></iconify-icon>
+            <span>My Payouts</span>
+                            </a>
+                        </li>
+        <li>
+          <a href="view-profile.html">
+            <iconify-icon icon="solar:user-outline" class="menu-icon"></iconify-icon>
+            <span>My Profile</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="navbar-header">
+      <div class="row align-items-center justify-content-between">
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-4">
+            <button type="button" class="sidebar-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon text-2xl non-active"></iconify-icon>
+              <iconify-icon icon="iconoir:arrow-right" class="icon text-2xl active"></iconify-icon>
+            </button>
+            <button type="button" class="sidebar-mobile-toggle">
+              <iconify-icon icon="heroicons:bars-3-solid" class="icon"></iconify-icon>
+            </button>
+            <form class="navbar-search">
+              <input type="text" name="search" placeholder="Search">
+              <iconify-icon icon="ion:search-outline" class="icon"></iconify-icon>
+            </form>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <button type="button" data-theme-toggle
+              class="w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center"></button>
+
+            <div class="dropdown">
+              <button
+                class="has-indicator w-40-px h-40-px bg-neutral-200 rounded-circle d-flex justify-content-center align-items-center position-relative"
+                type="button" data-bs-toggle="dropdown">
+                <iconify-icon icon="iconoir:bell" class="text-primary-light text-xl"></iconify-icon>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notificationBadge" style="display: none;">
+                  0
+                </span>
+              </button>
+              <div class="dropdown-menu to-top dropdown-menu-lg p-0">
+                <div
+                  class="m-16 py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                  <div>
+                    <h6 class="text-lg text-primary-light fw-semibold mb-0">Notifications</h6>
+                  </div>
+                  <span
+                    class="text-primary-600 fw-semibold text-lg w-40-px h-40-px rounded-circle bg-base d-flex justify-content-center align-items-center" id="notificationCount">0</span>
+                </div>
+
+                <div class="max-h-400-px overflow-y-auto scroll-sm pe-4" id="notificationsList">
+                  <!-- Notifications will be loaded here -->
+                </div>
+
+                <div class="text-center py-12 px-16">
+                  <a href="javascript:void(0)" class="text-primary-600 fw-semibold text-md">See All Notifications</a>
+                </div>
+
+              </div>
+            </div><!-- Notification dropdown end -->
+
+            <div class="dropdown">
+              <button class="d-flex justify-content-center align-items-center rounded-circle" type="button"
+                data-bs-toggle="dropdown">
+                <img src="assets/images/user.png" alt="image" class="w-40-px h-40-px object-fit-cover rounded-circle">
+              </button>
+              <div class="dropdown-menu to-top dropdown-menu-sm">
+                <div
+                  class="py-12 px-16 radius-8 bg-primary-50 mb-16 d-flex align-items-center justify-content-between gap-2">
+                  <div>
+                    <h6 class="text-lg text-primary-light fw-semibold mb-2 user-name">Loading...</h6>
+                    <span class="text-secondary-light fw-medium text-sm user-role">Employee</span>
+                  </div>
+                  <button type="button" class="hover-text-danger">
+                    <iconify-icon icon="radix-icons:cross-1" class="icon text-xl"></iconify-icon>
+                  </button>
+                </div>
+                <ul class="to-top-list">
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="view-profile.html">
+                      <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon> My Profile</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="my-shifts.html">
+                      <iconify-icon icon="solar:clock-circle-outline" class="icon text-xl"></iconify-icon> My Shifts</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3"
+                      href="available-shifts.html">
+                      <iconify-icon icon="solar:calendar-add-outline" class="icon text-xl"></iconify-icon> Available Shifts</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
+                      href="javascript:void(0)" id="logoutBtn">
+                      <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </div><!-- Profile dropdown end -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-main-body">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <h6 class="fw-semibold mb-0">My Payouts</h6>
+        <ul class="d-flex align-items-center gap-2">
+          <li class="fw-medium">
+            <a href="employee-dashboard.html" class="d-flex align-items-center gap-1 hover-text-primary">
+              <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+              Dashboard
+            </a>
+          </li>
+          <li>-</li>
+          <li class="fw-medium">My Payouts</li>
+        </ul>
+      </div>
+
+      <!-- Dashboard Cards -->
+      <div class="row row-cols-xxl-4 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1 row-cols-1 gy-4 mb-24">
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-primary h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-white mb-1">Total Earnings</p>
+                  <h6 class="mb-0 text-white" id="totalEarnings">$0</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-white bg-opacity-20 rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:dollar-minimalistic-outline" class="text-white text-xl"></iconify-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-success h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-white mb-1">Net Amount</p>
+                  <h6 class="mb-0 text-white" id="netAmount">$0</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-white bg-opacity-20 rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:bill-list-outline" class="text-white text-xl"></iconify-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-warning h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-white mb-1">Total Hours</p>
+                  <h6 class="mb-0 text-white" id="totalHours">0h</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-white bg-opacity-20 rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:clock-circle-outline" class="text-white text-xl"></iconify-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-none border bg-gradient-info h-100">
+            <div class="card-body p-20">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <p class="fw-medium text-white mb-1">Completed Payouts</p>
+                  <h6 class="mb-0 text-white" id="completedPayouts">0</h6>
+                </div>
+                <div class="w-50-px h-50-px bg-white bg-opacity-20 rounded-circle d-flex justify-content-center align-items-center">
+                  <iconify-icon icon="solar:check-circle-outline" class="text-white text-xl"></iconify-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestPayoutModal">
+            <iconify-icon icon="solar:add-circle-outline" class="icon text-lg me-2"></iconify-icon>
+            Request Payout
+          </button>
+          <button type="button" class="btn btn-info" onclick="loadMyPayouts()">
+            <iconify-icon icon="solar:refresh-outline" class="icon text-lg me-2"></iconify-icon>
+            Refresh Data
+          </button>
+        </div>
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <div class="form-group">
+            <select class="form-select" id="statusFilter" onchange="applyFilters()">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="completed">Completed</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed Shifts Available for Payout -->
+      <div class="row mb-24">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <h5 class="card-title mb-0">
+                  <iconify-icon icon="solar:check-circle-outline" class="icon text-lg me-2"></iconify-icon>
+                  Completed Shifts Available for Payout
+                </h5>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                  <span class="badge bg-success" id="availableShiftsCount">0</span>
+                  <button type="button" class="btn btn-sm btn-outline-primary" onclick="loadCompletedShiftsForRequest()">
+                    <iconify-icon icon="solar:refresh-outline" class="icon text-sm"></iconify-icon>
+                    Refresh
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Shift ID</th>
+                      <th>Title</th>
+                      <th>Date</th>
+                      <th>Hours Worked</th>
+                      <th>Hourly Rate</th>
+                      <th>Estimated Amount</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="completedShiftsTableBody">
+                    <tr>
+                      <td colspan="8" class="text-center">Loading completed shifts...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Payout Requests Section -->
+      <div class="row mb-24">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <h5 class="card-title mb-0">
+                  <iconify-icon icon="solar:clock-circle-outline" class="icon text-lg me-2"></iconify-icon>
+                  My Payout Requests
+                </h5>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                  <span class="badge bg-warning" id="pendingRequestsCount">0</span>
+                  <button type="button" class="btn btn-sm btn-outline-primary" onclick="loadMyPayoutRequests()">
+                    <iconify-icon icon="solar:refresh-outline" class="icon text-sm"></iconify-icon>
+                    Refresh
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Request ID</th>
+                      <th>Shift</th>
+                      <th>Amount</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                      <th>Requested</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="myPayoutRequestsTableBody">
+                    <tr>
+                      <td colspan="7" class="text-center">Loading payout requests...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- All My Payouts Section -->
+      <div class="row mb-24">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <h5 class="card-title mb-0">
+                  <iconify-icon icon="solar:dollar-minimalistic-outline" class="icon text-lg me-2"></iconify-icon>
+                  All My Payouts
+                </h5>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary" onclick="loadMyPayouts()">
+                    <iconify-icon icon="solar:refresh-outline" class="icon text-sm"></iconify-icon>
+                    Refresh
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Payout ID</th>
+                      <th>Shift</th>
+                      <th>Gross Amount</th>
+                      <th>Net Amount</th>
+                      <th>Hours Worked</th>
+                      <th>Status</th>
+                      <th>Type</th>
+                      <th>Created</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="payoutsTableBody">
+                    <tr>
+                      <td colspan="9" class="text-center">Loading payouts...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Payout Details Modal -->
+    <div class="modal fade" id="payoutDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payout Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="payoutDetailsContent">
+                    <!-- Payout details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Payout Modal -->
+    <div class="modal fade" id="requestPayoutModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Request Payout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="requestPayoutForm">
+                        <div class="mb-3">
+                            <label for="shiftSelect" class="form-label">Select Shift</label>
+                            <select class="form-select" id="shiftSelect" required>
+                                <option value="">Select a completed shift</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="isEarlyPayout">
+                                <label class="form-check-label" for="isEarlyPayout">
+                                    Early Payout (Less than 7 days - $5 fee applies)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="requestReason" class="form-label">Reason (Optional)</label>
+                            <textarea class="form-control" id="requestReason" rows="3" placeholder="Enter reason for payout request..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="submitPayoutRequest()">Submit Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">
+                        <iconify-icon icon="solar:question-circle-bold" class="icon text-warning me-2"></iconify-icon>
+                        <span id="confirmModalTitle">Confirm Action</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmModalMessage" class="mb-0"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <iconify-icon icon="solar:close-circle-outline" class="icon me-1"></iconify-icon>
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-primary" id="confirmModalBtn">
+                        <iconify-icon icon="solar:check-circle-outline" class="icon me-1"></iconify-icon>
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+  </main>
+
+  <script src="assets/js/lib/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap js -->
+  <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
+  <!-- Apex Chart js -->
+  <script src="assets/js/lib/apexcharts.min.js"></script>
+  <!-- Data Table js -->
+  <script src="assets/js/lib/dataTables.min.js"></script>
+  <!-- Iconify Font js -->
+  <script src="assets/js/lib/iconify-icon.min.js"></script>
+  <!-- jQuery UI js -->
+  <script src="assets/js/lib/jquery-ui.min.js"></script>
+  <!-- Vector Map js -->
+  <script src="assets/js/lib/jquery-jvectormap-2.0.5.min.js"></script>
+  <script src="assets/js/lib/jquery-jvectormap-world-mill-en.js"></script>
+  <!-- Popup js -->
+  <script src="assets/js/lib/magnifc-popup.min.js"></script>
+  <!-- Slick Slider js -->
+  <script src="assets/js/lib/slick.min.js"></script>
+  <!-- prism js -->
+  <script src="assets/js/lib/prism.js"></script>
+  <!-- file upload js -->
+  <script src="assets/js/lib/file-upload.js"></script>
+  <!-- audioplayer -->
+  <script src="assets/js/lib/audioplayer.js"></script>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/router.js"></script>
+  <script src="assets/js/profile-picture.js"></script>
+  <!-- main js -->
+  <script src="assets/js/app.js"></script>
+    <script>
+        let currentPage = 1;
+        let currentFilters = {};
+
+        // Show confirmation modal and return a promise
+        function showConfirmModal(title, message, confirmBtnText = 'Confirm', confirmBtnClass = 'btn-primary') {
+            return new Promise((resolve) => {
+                const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+                const modalTitle = document.getElementById('confirmModalTitle');
+                const modalMessage = document.getElementById('confirmModalMessage');
+                const confirmBtn = document.getElementById('confirmModalBtn');
+                
+                // Set content
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                confirmBtn.textContent = confirmBtnText;
+                
+                // Reset button classes
+                confirmBtn.className = 'btn ' + confirmBtnClass;
+                
+                // Handle confirm
+                const handleConfirm = () => {
+                    modal.hide();
+                    resolve(true);
+                    confirmBtn.removeEventListener('click', handleConfirm);
+                };
+                
+                // Handle cancel/close
+                const handleCancel = () => {
+                    resolve(false);
+                    confirmBtn.removeEventListener('click', handleConfirm);
+                };
+                
+                confirmBtn.addEventListener('click', handleConfirm);
+                document.getElementById('confirmationModal').addEventListener('hidden.bs.modal', handleCancel, { once: true });
+                
+                // Show modal
+                modal.show();
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPayoutSummary();
+            loadMyPayouts();
+            loadMyPayoutRequests();
+            loadCompletedShiftsForRequest();
+            loadNotifications();
+            loadUserInfo();
+        });
+
+        // Load payout summary
+        async function loadPayoutSummary() {
+            try {
+                const response = await maxicareAPI.getMyPayoutSummary();
+                if (response.status) {
+                    const summary = response.data;
+                    document.getElementById('totalEarnings').textContent = `$${(summary.totalAmount || 0).toFixed(2)}`;
+                    document.getElementById('netAmount').textContent = `$${(summary.totalNetAmount || 0).toFixed(2)}`;
+                    document.getElementById('completedPayouts').textContent = summary.completedPayouts || 0;
+                    
+                    // Calculate total hours from all payouts
+                    const payoutsResponse = await maxicareAPI.getMyPayouts({ limit: 1000 });
+                    if (payoutsResponse.status) {
+                        const totalMinutes = payoutsResponse.data.payouts.reduce((total, payout) => {
+                            return total + (payout.totalHoursWorked || 0);
+                        }, 0);
+                        document.getElementById('totalHours').textContent = `${(totalMinutes / 60).toFixed(1)}h`;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading payout summary:', error);
+                showAlert('Error loading payout summary', 'danger');
+            }
+        }
+
+        // Load my payouts
+        async function loadMyPayouts(page = 1) {
+            try {
+                const filters = { ...currentFilters, page, limit: 10 };
+                const response = await maxicareAPI.getMyPayouts(filters);
+                
+                if (response.status) {
+                    displayPayouts(response.data.payouts);
+                }
+            } catch (error) {
+                console.error('Error loading payouts:', error);
+                showAlert('Error loading payouts', 'danger');
+            }
+        }
+
+        // Display payouts in table
+        function displayPayouts(payouts) {
+            const tbody = document.getElementById('payoutsTableBody');
+            tbody.innerHTML = '';
+
+            if (payouts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center">No payouts found</td></tr>';
+                return;
+            }
+
+            payouts.forEach(payout => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${payout.id}</td>
+                    <td>${payout.shift ? payout.shift.title : 'N/A'}</td>
+                    <td>$${parseFloat(payout.amount).toFixed(2)}</td>
+                    <td>$${parseFloat(payout.netAmount).toFixed(2)}</td>
+                    <td>${(payout.totalHoursWorked / 60).toFixed(2)}h</td>
+                    <td><span class="badge status-badge status-${payout.status}">${payout.status}</span></td>
+                    <td><span class="badge ${payout.type === 'early' ? 'bg-warning' : 'bg-info'}">${payout.type}</span></td>
+                    <td>${new Date(payout.createdAt).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="viewPayoutDetails(${payout.id})">
+                            <iconify-icon icon="solar:eye-outline" class="icon text-sm"></iconify-icon>
+                            View
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const statusValue = document.getElementById('statusFilter').value;
+            
+            if (statusValue) {
+                currentFilters = { status: statusValue };
+            } else {
+                currentFilters = {};
+            }
+
+            currentPage = 1;
+            loadMyPayouts();
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('statusFilter').value = '';
+            currentFilters = {};
+            currentPage = 1;
+            loadMyPayouts();
+        }
+
+        // View payout details
+        async function viewPayoutDetails(payoutId) {
+            try {
+                const response = await maxicareAPI.getPayoutById(payoutId);
+                if (response.status) {
+                    const payout = response.data;
+                    const content = document.getElementById('payoutDetailsContent');
+                    
+                    content.innerHTML = `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Payout Information</h6>
+                                <table class="table table-sm">
+                                    <tr><td><strong>ID:</strong></td><td>${payout.id}</td></tr>
+                                    <tr><td><strong>Status:</strong></td><td><span class="badge status-badge status-${payout.status}">${payout.status}</span></td></tr>
+                                    <tr><td><strong>Type:</strong></td><td><span class="badge ${payout.type === 'early' ? 'bg-warning' : 'bg-info'}">${payout.type}</span></td></tr>
+                                    <tr><td><strong>Created:</strong></td><td>${new Date(payout.createdAt).toLocaleString()}</td></tr>
+                                    ${payout.processedAt ? `<tr><td><strong>Processed:</strong></td><td>${new Date(payout.processedAt).toLocaleString()}</td></tr>` : ''}
+                                    ${payout.completedAt ? `<tr><td><strong>Completed:</strong></td><td>${new Date(payout.completedAt).toLocaleString()}</td></tr>` : ''}
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Financial Details</h6>
+                                <table class="table table-sm">
+                                    <tr><td><strong>Gross Amount:</strong></td><td>$${parseFloat(payout.amount).toFixed(2)}</td></tr>
+                                    ${payout.earlyPayoutFee > 0 ? `<tr><td><strong>Early Fee:</strong></td><td>-$${parseFloat(payout.earlyPayoutFee).toFixed(2)}</td></tr>` : ''}
+                                    <tr><td><strong>Net Amount:</strong></td><td><strong>$${parseFloat(payout.netAmount).toFixed(2)}</strong></td></tr>
+                                    <tr><td><strong>Hours Worked:</strong></td><td>${(payout.totalHoursWorked / 60).toFixed(2)}h</td></tr>
+                                    <tr><td><strong>Hourly Rate:</strong></td><td>$${parseFloat(payout.hourlyRate).toFixed(2)}/hr</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h6>Shift Information</h6>
+                                <table class="table table-sm">
+                                    <tr><td><strong>Shift:</strong></td><td>${payout.shift ? payout.shift.title : 'N/A'}</td></tr>
+                                    <tr><td><strong>Date:</strong></td><td>${payout.shift ? new Date(payout.shift.date).toLocaleDateString() : 'N/A'}</td></tr>
+                                    <tr><td><strong>Start Time:</strong></td><td>${payout.shift ? new Date(payout.shift.startTime).toLocaleTimeString() : 'N/A'}</td></tr>
+                                    <tr><td><strong>End Time:</strong></td><td>${payout.shift ? new Date(payout.shift.endTime).toLocaleTimeString() : 'N/A'}</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        ${payout.failureReason ? `
+                            <div class="alert alert-danger mt-3">
+                                <strong>Failure Reason:</strong> ${payout.failureReason}
+                            </div>
+                        ` : ''}
+                    `;
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('payoutDetailsModal'));
+                    modal.show();
+                }
+            } catch (error) {
+                console.error('Error loading payout details:', error);
+                showAlert('Error loading payout details', 'danger');
+            }
+        }
+
+        // Load my payout requests
+        async function loadMyPayoutRequests() {
+            try {
+                const response = await maxicareAPI.getMyPayouts({ status: 'pending' });
+                if (response.status) {
+                    const requests = response.data.payouts || [];
+                    displayMyPayoutRequests(requests);
+                    
+                    // Update pending count badge
+                    const countElement = document.getElementById('pendingRequestsCount');
+                    if (countElement) {
+                        countElement.textContent = requests.length;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading payout requests:', error);
+                showAlert('Error loading payout requests', 'danger');
+            }
+        }
+
+        // Display my payout requests
+        function displayMyPayoutRequests(requests) {
+            const tbody = document.getElementById('myPayoutRequestsTableBody');
+            tbody.innerHTML = '';
+
+            if (requests.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center">No pending payout requests</td></tr>';
+                return;
+            }
+
+            requests.forEach(request => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${request.id}</td>
+                    <td>${request.shift ? request.shift.title : 'N/A'}</td>
+                    <td>$${parseFloat(request.netAmount).toFixed(2)}</td>
+                    <td><span class="badge ${request.type === 'early' ? 'bg-warning' : 'bg-info'}">${request.type}</span></td>
+                    <td><span class="badge status-badge status-${request.status}">${request.status}</span></td>
+                    <td>${new Date(request.createdAt).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="viewPayoutDetails(${request.id})">
+                            <iconify-icon icon="solar:eye-outline" class="icon text-sm"></iconify-icon>
+                            View
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Load completed shifts for payout request (ONLY current employee's shifts)
+        async function loadCompletedShiftsForRequest() {
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('maxicare_user') || sessionStorage.getItem('maxicare_user') || '{}');
+                console.log('Loading completed shifts for employee:', currentUser.id);
+                
+                // Employee side: Load only THIS employee's completed shifts (pass userId)
+                const response = await maxicareAPI.getCompletedShiftsForPayout(currentUser.id);
+                console.log('Completed shifts response for employee:', response);
+                
+                if (response.status) {
+                    const shifts = response.data || [];
+                    console.log('Completed shifts data (only this employee):', shifts);
+                    
+                    // Update modal select dropdown
+                    const select = document.getElementById('shiftSelect');
+                    select.innerHTML = '<option value="">Select a completed shift</option>';
+                    shifts.forEach(shift => {
+                        const option = document.createElement('option');
+                        option.value = shift.shiftId;
+                        option.textContent = `${shift.shift.title} - ${new Date(shift.shift.date).toLocaleDateString()}`;
+                        select.appendChild(option);
+                    });
+                    
+                    // Display in table
+                    displayCompletedShiftsTable(shifts);
+                    
+                    // Update badge count
+                    const countElement = document.getElementById('availableShiftsCount');
+                    if (countElement) {
+                        countElement.textContent = shifts.length;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading completed shifts:', error);
+                const tbody = document.getElementById('completedShiftsTableBody');
+                if (tbody) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error loading completed shifts</td></tr>';
+                }
+            }
+        }
+
+        // Display completed shifts in table
+        function displayCompletedShiftsTable(shifts) {
+            const tbody = document.getElementById('completedShiftsTableBody');
+            
+            console.log('Displaying completed shifts for employee:', shifts);
+            
+            if (!tbody) {
+                console.error('Table body element not found');
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            
+            if (!shifts || shifts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center">No completed shifts available for payout</td></tr>';
+                // Update badge count
+                const badge = document.getElementById('availableShiftsCount');
+                if (badge) badge.textContent = '0';
+                return;
+            }
+            
+            // Update badge count
+            const badge = document.getElementById('availableShiftsCount');
+            if (badge) badge.textContent = shifts.length;
+            
+            try {
+                shifts.forEach(shift => {
+                    console.log('Processing shift:', shift);
+                    
+                    // Convert totalHoursWorked from minutes to hours
+                    const hoursWorked = shift.totalHoursWorked ? (shift.totalHoursWorked / 60).toFixed(2) : '0.00';
+                    
+                    // Get hourly rate - convert string to number, prioritize shift.hourlyRate
+                    const hourlyRateStr = shift.shift?.hourlyRate || shift.hourlyRate || '0';
+                    const hourlyRate = parseFloat(hourlyRateStr) || 0;
+                    
+                    // Calculate estimated amount
+                    const estimatedAmount = (parseFloat(hoursWorked) * hourlyRate).toFixed(2);
+                    
+                    const shiftId = shift.shiftId || shift.id;
+                    const shiftTitle = shift.shift?.title || 'N/A';
+                    const shiftDate = shift.shift?.date || new Date();
+                    
+                    // Determine status badge based on approval status
+                    let statusBadge = '';
+                    let statusClass = '';
+                    let statusText = '';
+                    
+                    if (shift.isApproved) {
+                        statusClass = 'bg-success';
+                        statusText = 'Approved';
+                    } else if (shift.needsApproval) {
+                        statusClass = 'bg-warning text-dark';
+                        statusText = 'Pending Approval';
+                    } else if (shift.clockInStatus === 'clocked_out') {
+                        statusClass = 'bg-info';
+                        statusText = 'Clocked Out';
+                    } else {
+                        statusClass = 'bg-secondary';
+                        statusText = shift.clockInStatus || 'Unknown';
+                    }
+                    
+                    statusBadge = `<span class="badge ${statusClass}">${statusText}</span>`;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${shiftId}</td>
+                        <td>${shiftTitle}</td>
+                        <td>${new Date(shiftDate).toLocaleDateString()}</td>
+                        <td>${hoursWorked} hrs</td>
+                        <td>$${hourlyRate.toFixed(2)}/hr</td>
+                        <td>$${estimatedAmount}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="requestPayoutForShift(${shiftId})">
+                                <iconify-icon icon="solar:dollar-minimalistic-outline" class="icon text-sm"></iconify-icon>
+                                Request Payout
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error displaying completed shifts:', error);
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Error displaying shifts data</td></tr>';
+            }
+        }
+
+        // Request payout for specific shift
+        async function requestPayoutForShift(shiftId) {
+            const confirmed = await showConfirmModal(
+                'Request Payout',
+                'Do you want to request a payout for this shift? Your request will be reviewed by an administrator.',
+                'Request Payout',
+                'btn-success'
+            );
+            
+            if (!confirmed) return;
+            
+            try {
+                showAlert('Submitting payout request...', 'info');
+                
+                // Use the new requestPayout endpoint for employees
+                const response = await maxicareAPI.requestPayout(shiftId, false);
+                
+                if (response.status) {
+                    showAlert('Payout request submitted successfully! Your request is now pending approval.', 'success');
+                    
+                    // Refresh all relevant data
+                    await Promise.all([
+                        loadCompletedShiftsForRequest(),
+                        loadMyPayoutRequests(),
+                        loadMyPayouts(),
+                        loadPayoutSummary()
+                    ]);
+                }
+            } catch (error) {
+                console.error('Error requesting payout:', error);
+                showAlert('Error requesting payout: ' + error.message, 'danger');
+            }
+        }
+
+        // Load notifications
+        async function loadNotifications() {
+            try {
+                const response = await maxicareAPI.getNotifications(1, 10);
+                if (response.status) {
+                    displayNotifications(response.data.notifications || []);
+                    updateNotificationCount(response.data.unreadCount || 0);
+                } else {
+                    displayNotifications([]);
+                    updateNotificationCount(0);
+                }
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+                displayNotifications([]);
+                updateNotificationCount(0);
+            }
+        }
+
+        // Display notifications
+        function displayNotifications(notifications) {
+            const notificationsList = document.getElementById('notificationsList');
+            if (!notificationsList) return;
+
+            if (notifications.length === 0) {
+                notificationsList.innerHTML = `
+                    <div class="text-center py-3">
+                        <iconify-icon icon="solar:bell-off-outline" class="icon text-2xl text-secondary-light mb-2"></iconify-icon>
+                        <p class="text-secondary-light text-sm mb-0">No notifications</p>
+                    </div>
+                `;
+                return;
+            }
+
+            notificationsList.innerHTML = notifications.map(notification => `
+                <div class="notification-item p-12 border-bottom border-light hover-bg-light cursor-pointer" 
+                     onclick="markNotificationAsRead(${notification.id})">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="w-8-px h-8-px rounded-circle ${notification.isRead ? 'bg-secondary-light' : 'bg-primary'} mt-1"></div>
+                        <div class="flex-grow-1">
+                            <h6 class="text-sm fw-semibold mb-1 ${notification.isRead ? 'text-secondary-light' : 'text-dark'}">
+                                ${notification.title || 'Notification'}
+                            </h6>
+                            <p class="text-xs text-secondary-light mb-1">
+                                ${notification.message || 'No message'}
+                            </p>
+                            <span class="text-xs text-secondary-light">
+                                ${new Date(notification.createdAt).toLocaleString()}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update notification count
+        function updateNotificationCount(count) {
+            const notificationCount = document.getElementById('notificationCount');
+            if (notificationCount) {
+                notificationCount.textContent = count;
+            }
+            
+            // Update badge indicator on bell icon
+            const notificationBadge = document.getElementById('notificationBadge');
+            if (notificationBadge) {
+                if (count > 0) {
+                    notificationBadge.textContent = count > 99 ? '99+' : count;
+                    notificationBadge.style.display = 'block';
+                } else {
+                    notificationBadge.style.display = 'none';
+                }
+            }
+        }
+
+        // Mark notification as read
+        async function markNotificationAsRead(notificationId) {
+            try {
+                await maxicareAPI.markNotificationAsRead(notificationId);
+                loadNotifications();
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+            }
+        }
+
+        // Load user info
+        function loadUserInfo() {
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('maxicare_user') || sessionStorage.getItem('maxicare_user') || '{}');
+                const userNameElement = document.querySelector('.user-name');
+                if (userNameElement && currentUser.firstname) {
+                    userNameElement.textContent = `${currentUser.firstname} ${currentUser.lastname || ''}`.trim();
+                }
+            } catch (error) {
+                console.error('Error loading user info:', error);
+            }
+        }
+
+        // Logout functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#logoutBtn')) {
+                e.preventDefault();
+                logout();
+            }
+        });
+
+        function logout() {
+            try {
+                localStorage.removeItem('maxicare_token');
+                localStorage.removeItem('maxicare_user');
+                sessionStorage.removeItem('maxicare_token');
+                sessionStorage.removeItem('maxicare_user');
+                window.location.href = 'sign-in.html';
+            } catch (error) {
+                console.error('Error during logout:', error);
+                window.location.href = 'sign-in.html';
+            }
+        }
+
+        // Submit payout request
+        async function submitPayoutRequest() {
+            const shiftId = document.getElementById('shiftSelect').value;
+            const isEarlyPayout = document.getElementById('isEarlyPayout').checked;
+
+            if (!shiftId) {
+                showAlert('Please select a shift', 'warning');
+                return;
+            }
+
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('maxicare_user') || sessionStorage.getItem('maxicare_user') || '{}');
+                const response = await maxicareAPI.createPayout(currentUser.id, shiftId, isEarlyPayout);
+                if (response.status) {
+                    showAlert('Payout request submitted successfully', 'success');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('requestPayoutModal'));
+                    if (modal) modal.hide();
+                    document.getElementById('requestPayoutForm').reset();
+                    loadMyPayoutRequests();
+                    loadMyPayouts();
+                    loadPayoutSummary();
+                }
+            } catch (error) {
+                console.error('Error creating payout request:', error);
+                showAlert('Error creating payout request: ' + error.message, 'danger');
+            }
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

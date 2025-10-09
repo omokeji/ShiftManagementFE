@@ -58,7 +58,8 @@ class AuthService {
                     team: userData.team,
                     title: userData.title,
                     role: userData.role || response.data.role || 'user',
-                    isConfirmed: userData.isConfirmed
+                    isConfirmed: userData.isConfirmed,
+                    profilePicture: userData.profilePicture
                 };
                 
                 this.isAuthenticated = true;

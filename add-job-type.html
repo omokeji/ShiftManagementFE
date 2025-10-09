@@ -321,14 +321,13 @@
                     <div class="mb-3">
                       <label class="form-label">Location on Map *</label>
                       <div id="mapContainer" style="height: 400px; width: 100%; border-radius: 8px; border: 1px solid #dee2e6;">
-                        <gmpx-api-loader key="AIzaSyB4x0VLJqIZcy5bxDo2NtRxPOermRQ7Tus" solution-channel="GMP_GE_mapsandplacesautocomplete_v2">
-                        </gmpx-api-loader>
-                        <gmp-map center="40.7128,-74.0060" zoom="10" map-id="DEMO_MAP_ID" style="height: 100%; width: 100%;">
-                          <div slot="control-block-start-inline-start" class="place-picker-container" style="padding: 10px; background: white; border-radius: 4px; margin: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                            <gmpx-place-picker placeholder="Enter an address" id="placePicker"></gmpx-place-picker>
+                        <div id="mapLoadingMessage" style="padding: 20px; text-align: center; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                          <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
                           </div>
-                          <gmp-advanced-marker id="marker"></gmp-advanced-marker>
-                        </gmp-map>
+                          <h5>Loading Google Maps...</h5>
+                          <p class="text-muted">Please wait while we initialize the map</p>
+                        </div>
                       </div>
                       <small class="text-muted">Search for an address or click on the map to set the exact location</small>
                     </div>
@@ -347,8 +346,15 @@
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label for="radius" class="form-label">Radius (miles)</label>
-                      <input type="number" class="form-control" id="radius" min="0" step="0.1" value="5">
+                      <label for="radius" class="form-label">Radius (meters)</label>
+                      <input type="number" class="form-control" id="radius" min="0" step="1" value="5000">
+                      <div class="form-text">
+                        <small class="text-muted">
+                          <i class="fas fa-info-circle"></i> 
+                          Employees must be within this distance (in meters) to clock in/out. 
+                          Common values: 100m (very close), 1000m (1km), 5000m (5km)
+                        </small>
+                      </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-center gap-3">
                       <button type="button" class="btn btn-secondary" onclick="cancelForm()">
@@ -410,6 +416,7 @@
   <script src="assets/js/api.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/router.js"></script>
+  <script src="assets/js/profile-picture.js"></script>
   <!-- main js -->
   <script src="assets/js/app.js"></script>
 
@@ -422,6 +429,31 @@
     // Initialize Google Maps Extended Components
     async function initMap() {
       try {
+        // First, fetch the Google Maps API key from the server
+        console.log('Fetching Google Maps API key from server...');
+        const apiKeyResponse = await maxicareAPI.getGoogleMapsApiKey();
+        
+        if (!apiKeyResponse.status || !apiKeyResponse.data.apiKey) {
+          throw new Error('Failed to retrieve Google Maps API key from server');
+        }
+
+        const apiKey = apiKeyResponse.data.apiKey;
+        console.log('Google Maps API key retrieved successfully');
+
+        // Create the API loader with the secure API key
+        const mapContainer = document.getElementById('mapContainer');
+        mapContainer.innerHTML = `
+          <gmpx-api-loader key="${apiKey}" solution-channel="GMP_GE_mapsandplacesautocomplete_v2">
+          </gmpx-api-loader>
+          <gmp-map center="40.7128,-74.0060" zoom="10" map-id="DEMO_MAP_ID" style="height: 100%; width: 100%;">
+            <div slot="control-block-start-inline-start" class="place-picker-container" style="padding: 10px; background: white; border-radius: 4px; margin: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <gmpx-place-picker placeholder="Enter an address" id="placePicker"></gmpx-place-picker>
+            </div>
+            <gmp-advanced-marker id="marker"></gmp-advanced-marker>
+          </gmp-map>
+        `;
+
+        // Wait for the custom elements to be defined
         await customElements.whenDefined('gmp-map');
         
         map = document.querySelector('gmp-map');
@@ -520,20 +552,25 @@
         
       } catch (error) {
         console.error('Error initializing Google Maps:', error);
-        showMapError();
+        showMapError(error.message);
       }
     }
 
     // Show error message when Google Maps fails to load
-    function showMapError() {
+    function showMapError(errorMessage = '') {
       const mapContainer = document.getElementById('mapContainer');
       
       if (mapContainer) {
+        const errorDetails = errorMessage ? `<p class="text-danger"><small>Error: ${errorMessage}</small></p>` : '';
+        
         mapContainer.innerHTML = `
           <div style="padding: 20px; text-align: center; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+            <iconify-icon icon="solar:map-outline" class="icon text-4xl text-danger mb-3"></iconify-icon>
             <h4>Map Unavailable</h4>
             <p>Google Maps could not be loaded. Please check your internet connection or try refreshing the page.</p>
+            ${errorDetails}
             <p><small>You can still enter coordinates manually in the latitude and longitude fields.</small></p>
+            <button class="btn btn-primary btn-sm mt-2" onclick="initMap()">Retry</button>
           </div>
         `;
       }

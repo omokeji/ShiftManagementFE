@@ -247,7 +247,7 @@
                   </li>
                   <li>
                     <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-danger d-flex align-items-center gap-3"
-                      href="javascript:void(0)">
+                      href="javascript:void(0)" id="logoutBtn">
                       <iconify-icon icon="lucide:power" class="icon text-xl"></iconify-icon> Log Out</a>
                   </li>
                 </ul>
@@ -298,6 +298,14 @@
                   </div>
                   <!-- Upload Image End -->
 
+                  <!-- Password Info Alert -->
+                  <div class="alert alert-info d-flex align-items-center mb-20" role="alert" id="passwordInfoAlert">
+                    <iconify-icon icon="solar:shield-check-outline" class="icon text-xl me-2"></iconify-icon>
+                    <div>
+                      <strong>Automatic Password Generation:</strong> A secure random password will be automatically generated and sent to the user's email address.
+                    </div>
+                  </div>
+
                   <form id="addUserForm">
                     <input type="hidden" id="userId" value="">
                     <div class="row">
@@ -343,26 +351,6 @@
                         <div class="mb-20">
                           <label for="title" class="form-label fw-semibold text-primary-light text-sm mb-8">Job Title</label>
                           <input type="text" class="form-control radius-8" id="title" placeholder="Enter Job Title">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="mb-20">
-                          <label for="password" class="form-label fw-semibold text-primary-light text-sm mb-8">Password <span class="text-danger-600">*</span></label>
-                          <div class="position-relative">
-                            <input type="password" class="form-control radius-8" id="password" placeholder="Enter password" required>
-                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#password"></span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="mb-20">
-                          <label for="confirmPassword" class="form-label fw-semibold text-primary-light text-sm mb-8">Confirm Password <span class="text-danger-600">*</span></label>
-                          <div class="position-relative">
-                            <input type="password" class="form-control radius-8" id="confirmPassword" placeholder="Confirm password" required>
-                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light" data-toggle="#confirmPassword"></span>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -471,6 +459,7 @@
   <script src="assets/js/api.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/router.js"></script>
+  <script src="assets/js/profile-picture.js"></script>
   <!-- main js -->
   <script src="assets/js/app.js"></script>
 
@@ -504,6 +493,12 @@
         await loadUserForEdit(editUserId);
         document.querySelector('h6.fw-semibold').textContent = 'Edit User';
         document.getElementById('saveBtn').textContent = 'Update User';
+        
+        // Hide password info alert when editing
+        const passwordInfoAlert = document.getElementById('passwordInfoAlert');
+        if (passwordInfoAlert) {
+          passwordInfoAlert.style.display = 'none';
+        }
       }
 
       // Add logout functionality
@@ -513,109 +508,116 @@
       });
 
       // Form submission
-      document.getElementById('addUserForm').addEventListener('submit', handleFormSubmit);
-
-      // Load admin users for direct manager dropdown (only if not in edit mode)
-      if (!editUserId) {
-        await loadAdminUsers();
+      const form = document.getElementById('addUserForm');
+      
+      if (form) {
+        console.log('Form found, attaching submit handler');
+        form.addEventListener('submit', handleFormSubmit);
+      } else {
+        console.error('Form with id "addUserForm" not found!');
       }
+
+      // Always load admin users for direct manager dropdown
+      await loadAdminUsers();
     });
 
     async function loadUserForEdit(userId) {
       try {
         const response = await maxicareAPI.getUser(userId);
+        
         if (response.status) {
           const user = response.data;
-          
+
           // Populate form fields
-          document.getElementById('userId').value = user.id;
-          document.getElementById('firstName').value = user.firstname;
-          document.getElementById('lastName').value = user.lastname;
-          document.getElementById('username').value = user.username;
-          document.getElementById('email').value = user.email;
+          document.getElementById('userId').value = user.id || '';
+          document.getElementById('firstName').value = user.firstname || '';
+          document.getElementById('lastName').value = user.lastname || '';
+          document.getElementById('username').value = user.username || '';
+          document.getElementById('email').value = user.email || '';
           document.getElementById('phone').value = user.phone || '';
           document.getElementById('title').value = user.title || '';
-          document.getElementById('role').value = user.role;
+          
+          // Handle role field
+          const roleSelect = document.getElementById('role');
+          if (user.role) {
+            roleSelect.value = user.role;
+          } else {
+            console.warn('Role is missing from user data!');
+          }
+          
           document.getElementById('team').value = user.team || '';
           document.getElementById('directManager').value = user.directmanager || '';
-          document.getElementById('employmentStartDate').value = user.employmentstartdate ? user.employmentstartdate.split('T')[0] : '';
-          document.getElementById('isActive').checked = user.active;
+          
+          // Handle employment start date
+          if (user.employmentstartdate) {
+            const dateValue = user.employmentstartdate.split('T')[0];
+            document.getElementById('employmentStartDate').value = dateValue;
+          } else {
+            document.getElementById('employmentStartDate').value = '';
+          }
+          
+          document.getElementById('isActive').checked = user.active !== undefined ? user.active : true;
+          
+        } else {
+          console.error('Failed to load user - API returned status: false');
+          showAlert('Failed to load user data', 'danger');
         }
       } catch (error) {
         console.error('Error loading user for edit:', error);
-        showAlert('Error loading user data', 'danger');
+        showAlert('Error loading user data: ' + error.message, 'danger');
       }
     }
 
     async function handleFormSubmit(e) {
       e.preventDefault();
+      e.stopPropagation();
       
       try {
-        // Get form values
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
+        // Basic validation
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const role = document.getElementById('role').value;
         
-        // Validate password if not in edit mode
-        if (!isEditMode) {
-          if (!password) {
-            showAlert('Password is required', 'warning');
-            return;
-          }
-          if (password.length < 8) {
-            showAlert('Password must be at least 8 characters long', 'warning');
-            return;
-          }
-          if (password !== confirmPassword) {
-            showAlert('Passwords do not match', 'warning');
-            return;
-          }
+        if (!firstName || !lastName || !username || !email || !phone || !role) {
+          showAlert('Please fill in all required fields', 'warning');
+          console.log('Validation failed - missing required fields');
+          return;
         }
         
         const formData = {
-          firstname: document.getElementById('firstName').value,
-          lastname: document.getElementById('lastName').value,
-          username: document.getElementById('username').value,
-          email: document.getElementById('email').value,
-          phone: document.getElementById('phone').value,
-          title: document.getElementById('title').value,
-          role: document.getElementById('role').value,
-          team: document.getElementById('team').value,
+          firstname: firstName,
+          lastname: lastName,
+          username: username,
+          email: email,
+          phone: phone,
+          title: document.getElementById('title').value.trim(),
+          role: role,
+          team: document.getElementById('team').value.trim(),
           directmanager: document.getElementById('directManager').value,
           employmentstartdate: document.getElementById('employmentStartDate').value,
           active: document.getElementById('isActive').checked
         };
-        
-        // Add password only if not in edit mode
-        if (!isEditMode) {
-          formData.password = password;
-        }
 
-        console.log('=== ADD USER DEBUG ===');
-        console.log('Form data:', formData);
-        console.log('Is edit mode:', isEditMode);
-        
         let response;
         if (isEditMode) {
-          console.log('Updating user with ID:', editUserId);
           response = await maxicareAPI.updateUser(editUserId, formData);
         } else {
-          console.log('Creating new user');
           response = await maxicareAPI.createUser(formData);
         }
         
-        console.log('API Response:', response);
-
-        if (response.status) {
+        if (response && response.status) {
           showAlert(isEditMode ? 'User updated successfully' : 'User created successfully', 'success');
           setTimeout(() => {
             window.location.href = 'users-list.html';
           }, 1500);
         } else {
-          showAlert('Error saving user: ' + response.message, 'danger');
+          showAlert('Error saving user: ' + (response ? response.message : 'No response from server'), 'danger');
         }
       } catch (error) {
-        console.error('Error saving user:', error);
-        showAlert('Error saving user', 'danger');
+        showAlert('Error saving user: ' + error.message, 'danger');
       }
     }
 

@@ -11,6 +11,7 @@ class MaxiCareRouter {
       'view-profile.html',
       'my-shifts.html',
       'available-shifts.html',
+      'employee-payouts.html',
       'sign-in.html',
       'sign-up.html',
       'forgot-password.html',
@@ -39,6 +40,8 @@ class MaxiCareRouter {
       'test-connection.html',
       'test-pages.html',
       'test-role-access.html',
+      // Payout Management pages
+      'payout-management.html',
       // Add more valid pages as needed
     ];
     

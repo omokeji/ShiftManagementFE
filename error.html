@@ -198,70 +198,6 @@
                     <p class="mt-2 text-secondary-light text-sm">Loading notifications...</p>
                   </div>
                 </div>
-                    </div>
-                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
-                  </a>
-
-                  <a href="javascript:void(0)"
-                    class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between bg-neutral-50">
-                    <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
-                      <span
-                        class="w-44-px h-44-px bg-success-subtle text-success-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
-                        <img src="assets/images/notification/profile-1.png" alt="">
-                      </span>
-                      <div>
-                        <h6 class="text-md fw-semibold mb-4">Ronald Richards</h6>
-                        <p class="mb-0 text-sm text-secondary-light text-w-200-px">You can stitch between artboards</p>
-                      </div>
-                    </div>
-                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
-                  </a>
-
-                  <a href="javascript:void(0)"
-                    class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between">
-                    <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
-                      <span
-                        class="w-44-px h-44-px bg-info-subtle text-info-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
-                        AM
-                      </span>
-                      <div>
-                        <h6 class="text-md fw-semibold mb-4">Arlene McCoy</h6>
-                        <p class="mb-0 text-sm text-secondary-light text-w-200-px">Invite you to prototyping</p>
-                      </div>
-                    </div>
-                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
-                  </a>
-
-                  <a href="javascript:void(0)"
-                    class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between bg-neutral-50">
-                    <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
-                      <span
-                        class="w-44-px h-44-px bg-success-subtle text-success-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
-                        <img src="assets/images/notification/profile-2.png" alt="">
-                      </span>
-                      <div>
-                        <h6 class="text-md fw-semibold mb-4">Annette Black</h6>
-                        <p class="mb-0 text-sm text-secondary-light text-w-200-px">Invite you to prototyping</p>
-                      </div>
-                    </div>
-                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
-                  </a>
-
-                  <a href="javascript:void(0)"
-                    class="px-24 py-12 d-flex align-items-start gap-3 mb-2 justify-content-between">
-                    <div class="text-black hover-bg-transparent hover-text-primary d-flex align-items-center gap-3">
-                      <span
-                        class="w-44-px h-44-px bg-info-subtle text-info-main rounded-circle d-flex justify-content-center align-items-center flex-shrink-0">
-                        DR
-                      </span>
-                      <div>
-                        <h6 class="text-md fw-semibold mb-4">Darlene Robertson</h6>
-                        <p class="mb-0 text-sm text-secondary-light text-w-200-px">Invite you to prototyping</p>
-                      </div>
-                    </div>
-                    <span class="text-sm text-secondary-light flex-shrink-0">23 Mins ago</span>
-                  </a>
-                </div>
 
                 <div class="text-center py-12 px-16">
                   <a href="javascript:void(0)" class="text-primary-600 fw-semibold text-md">See All Notification</a>
@@ -409,6 +345,17 @@
       
       // Update navigation buttons based on user role
       updateBackToHomeButton();
+      
+      // Load notifications
+      loadNotifications();
+      
+      // Add notification dropdown click handler
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('[data-bs-toggle="dropdown"]') && e.target.closest('[data-bs-toggle="dropdown"]').querySelector('iconify-icon[icon="iconoir:bell"]')) {
+          // Refresh notifications when dropdown is opened
+          loadNotifications();
+        }
+      });
     });
 
     function showAttemptedUrl() {
@@ -517,23 +464,25 @@
         
         // Load unread count
         const countResponse = await maxicareAPI.getUnreadNotificationCount();
-        if (countResponse && countResponse.status) {
+        if (countResponse && countResponse.success) {
           const countEl = document.getElementById('notificationCount');
           if (countEl) {
-            countEl.textContent = countResponse.data.count;
+            countEl.textContent = countResponse.data.count || 0;
+            countEl.style.display = (countResponse.data.count || 0) > 0 ? 'flex' : 'none';
           }
         }
 
         // Load recent notifications
-        const notificationsResponse = await maxicareAPI.getNotifications(1, 5);
-        if (notificationsResponse && notificationsResponse.status) {
-          updateNotificationsList(notificationsResponse.data.notifications);
+        const notificationsResponse = await maxicareAPI.getNotifications(parseInt(1), parseInt(5));
+        if (notificationsResponse && notificationsResponse.success) {
+          updateNotificationsList(notificationsResponse.data.notifications || []);
         } else {
           showNoNotificationsMessage();
         }
       } catch (error) {
         console.error('Error loading notifications:', error);
         showNoNotificationsMessage();
+        updateNotificationCount(0);
       }
     }
 
@@ -570,10 +519,18 @@
 
       notificationsList.innerHTML = `
         <div class="text-center py-4">
-          <iconify-icon icon="solar:bell-outline" class="icon text-4xl text-secondary-light mb-2"></iconify-icon>
+          <iconify-icon icon="solar:bell-off-outline" class="icon text-4xl text-secondary-light mb-2"></iconify-icon>
           <p class="text-secondary-light mb-0">No notifications</p>
         </div>
       `;
+    }
+
+    function updateNotificationCount(count) {
+      const notificationCount = document.getElementById('notificationCount');
+      if (notificationCount) {
+        notificationCount.textContent = count;
+        notificationCount.style.display = count > 0 ? 'flex' : 'none';
+      }
     }
 
     function getNotificationIcon(type) {
